@@ -1,0 +1,30 @@
+const Chats = require('../models/messagesModel')
+
+const createMSG = async (req, res) => {
+    try {
+        const msg = await Chats.create(req.body)
+        res.status(200).json({
+            success: true,
+            data: msg
+        })
+    } catch (error) {
+        console.log("Error at creating msg", error)
+    }
+}
+
+const getMSG = async (req, res) => {
+    try {
+        const { email } = req.body
+
+        const data = await Chats.find({ $or: [{ from: email }, { to: email }] })
+        res.status(200).json({
+            success: true,
+            data: data
+        })
+
+    } catch (error) {
+        console.log("Error at getting msg", error)
+    }
+}
+
+module.exports = { createMSG, getMSG }

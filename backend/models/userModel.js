@@ -14,20 +14,9 @@ const UserModel = new mongoose.Schema({
         type: String,
         required: true
     },
-    cpassword: {
-        type: String,
-        required: true
-    },
-    messeges: {
-        type: Array,
-        required: true
-    },
-    username: {
-        type: String,
-        required: true
-    },
-
-
-})
+    chats: {
+        type: Array
+    }
+}, { versionKey: false, timestamps: true })
 
 module.exports = mongoose.model("User", UserModel, "users")
