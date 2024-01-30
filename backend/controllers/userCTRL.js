@@ -11,7 +11,7 @@ const registerCtrl = async (req, res) => {
         }
         else {
             const newUser = await User.create(req.body)
-            res.status(200).json({ success: true, msg: "User already exists", user: newUser })
+            res.status(200).json({ success: true, msg: "User created successfully", user: newUser })
         }
 
     } catch (error) {
@@ -24,10 +24,10 @@ const loginCtrl = async (req, res) => {
         const { email, password } = req.body
         const findUser = await User.findOne({ email: email })
         if (!findUser) {
-            res.json({ message: 'User not found' });
+            res.json({ message: 'User not found', success: false });
         }
         else if (password !== findUser.password) {
-            res.json({ message: "Invalid Password" })
+            res.json({ message: "Invalid Password", success: false })
         }
         else {
             let payload = {
@@ -38,9 +38,9 @@ const loginCtrl = async (req, res) => {
             jwt.sign(payload, "MyJwt", { expiresIn: 600 }, (err, token) => {
                 if (err) {
                     console.error('Error signing token:', err);
-                    res.status(500).json({ message: 'Internal Server Error' });
+                    res.status(500).json({ message: 'Internal Server Error', success: false });
                 } else {
-                    res.status(201).json({ token: token });
+                    res.status(201).json({ token: token, success: true });
                 }
             })
         }
