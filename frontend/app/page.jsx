@@ -2,10 +2,10 @@
 
 import { login } from "@/utils/routes";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { setCookie } from "nookies"
 import { useRouter } from "next/navigation";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, } from "react-redux";
 import { fetchUser } from "@/Store/features/users/userReducer";
 
 export default function Home() {

@@ -35,7 +35,7 @@ const loginCtrl = async (req, res) => {
                     id: findUser._id
                 }
             }
-            jwt.sign(payload, "MyJwt", { expiresIn: 600 }, (err, token) => {
+            jwt.sign(payload, "MyJwt", { expiresIn: 3600 }, (err, token) => {
                 if (err) {
                     console.error('Error signing token:', err);
                     res.status(500).json({ message: 'Internal Server Error', success: false });

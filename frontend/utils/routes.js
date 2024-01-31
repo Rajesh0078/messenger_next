@@ -1,8 +1,6 @@
 "use server"
 import axios from "axios"
 import { API } from "./Api"
-import { cookies } from "next/headers"
-import { redirect } from "next/navigation"
 
 
 export const login = async (body) => {
@@ -19,9 +17,13 @@ export const getUser = async (token) => {
     return data
 }
 
-export const logout = async () => {
-    await cookies().delete("token")
-    await redirect("/")
-    // return true
+
+export const postMsg = async (msg) => {
+    const { data } = await axios.post(API.postMsg, msg)
+    return data
 }
 
+export const getMsg = async (msg) => {
+    const { data } = await axios.post(API.getMsg, msg)
+    return data
+}
