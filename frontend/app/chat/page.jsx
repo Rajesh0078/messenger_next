@@ -111,9 +111,8 @@ const page = () => {
                                 {
                                     data.length && data.map((i) => {
                                         return (
-                                            // <div key={i._id} className={` px-2 py-1 rounded-full my-1 max-w-[70%] ${i.from === user?.user.email ? "text-right self-end bg-slate-100 shadow-x" : "self-start text-left"} `}>{i.text}</div>
                                             <div key={i._id} className={`flex ${i.from === user?.user.email ? "justify-end" : "justify-start"}`}>
-                                                <div style={{ wordBreak: "break-all" }} className={`px-2 shadow-x my-1  py-[.5rem] max-w-[60%] ${i.from === user?.user.email ? " text-white rounded-l-2xl bg-blue-800 text-right" : "text-left bg-sky-200 rounded-r-2xl"} `}>{i.text}</div>
+                                                <div className={`px-3 break-words text-sm shadow-x my-1  py-[.5rem] max-w-[60%] ${i.from === user?.user.email ? " text-white rounded-l-2xl bg-blue-800 text-right" : "text-left bg-sky-200 rounded-r-2xl"} `}>{i.text}</div>
                                             </div>
                                         )
                                     })
