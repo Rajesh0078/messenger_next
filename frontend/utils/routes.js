@@ -2,15 +2,13 @@
 import axios from "axios"
 import { API } from "./Api"
 import { cookies } from "next/headers"
-import { updateUser } from "./storeCalls"
+import { redirect } from "next/navigation"
 
 
 export const login = async (body) => {
     const { data } = await axios.post(API.login, body)
     if (data.success) {
-        cookies().set("token", data.token, { secure: true })
-        let user = getUser(data.token)
-        return user
+        return data.token
     } else {
         return data.message
     }
@@ -23,5 +21,7 @@ export const getUser = async (token) => {
 
 export const logout = async () => {
     await cookies().delete("token")
-    return true
+    await redirect("/")
+    // return true
 }
+
