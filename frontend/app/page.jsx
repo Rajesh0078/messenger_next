@@ -59,14 +59,14 @@ export default function Home() {
             <button className={`w-[50%] py-3 font-bold ${active ? "bg-blue-800 text-white" : ""}`} onClick={activeHandler}>LOGIN</button>
             <button className={`w-[50%] py-3 font-bold ${!active ? "bg-blue-800 text-white" : ""}`} onClick={activeHandler}>REGISTER</button>
           </div>
-          <form className="w-full p-5 flex flex-col gap-5" onSubmit={loginHandler}>
+          <form className="w-full p-5 flex flex-col gap-5" >
             <div>
               <input type="email" name="email" id="email" placeholder="Email" className="w-full outline-none border p-3" required autoComplete="off" onChange={changeHandler} />
             </div>
             <div>
               <input type="password" name="password" id="password" placeholder="password" className="w-full outline-none border p-3" required autoComplete="off" onChange={changeHandler} />
             </div>
-            <input type="submit" value="Login" className="bg-blue-400 text-white p-2" />
+            <input type="button" value="Login" className="bg-blue-400 text-white p-2" onClick={loginHandler} />
           </form>
           <div className="px-5 text-center">
             <div className="flex items-center justify-between">

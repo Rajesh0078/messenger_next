@@ -8,15 +8,13 @@ import { useSelector } from 'react-redux'
 import "swiper/css";
 import 'swiper/css/free-mode';
 import { BiSolidSend } from "react-icons/bi";
-import { allUsers, getMsg, postMsg } from '@/utils/routes';
-import axios from 'axios';
-import { API } from '@/utils/Api';
+import { allUsers, postMsg } from '@/utils/routes';
+
 import { Socket, io } from "socket.io-client"
 
 const page = () => {
     const user = useSelector((state) => state.user.user)
     const [value, setValue] = useState('')
-    const [data, setData] = useState([])
     const [messegaes, setMessages] = useState([])
 
     const socket = io.connect('http://localhost:8080')
@@ -58,34 +56,22 @@ const page = () => {
             console.log("not done", user)
         }
     }
-    // msg()
 
-    // const msg = async () => {
-    //     const { data } = await axios.post(API.getMsg, { email: "a@gmail.com" })
-    //     if (data.data.length) {
-    //         setData(data.data)
-    //     }
-    // }
 
     useEffect(() => {
         socket.on("get-msg", (message) => {
-            setMessages([...messegaes, message])
-        })
+            setMessages(prevMessages => [...prevMessages, message]);
+        });
+
         return () => {
             socket.on("disconnect")
+            socket.off("get-msg");
         }
     }, [])
 
     useEffect(() => {
         getUsers()
     }, [])
-
-    // useEffect(() => {
-    //     msg()
-    //     // console.log(data)
-    // }, [value])
-
-    // console.log(data)
 
     return (
         <>
@@ -140,9 +126,9 @@ const page = () => {
                             <div className='px-4 flex flex-col-reverse overflow-y-auto chat-scroll' style={{ height: "calc(100% - 68px)" }}>
                                 <div className="pt-2">
                                     {
-                                        messegaes.length && messegaes.map((i) => {
+                                        messegaes.length && messegaes.map((i, ins) => {
                                             return (
-                                                <div key={i._id} className={`flex ${i.from === user?.user?.email ? "justify-end" : "justify-start"}`}>
+                                                <div key={ins} className={`flex ${i.from === user?.user?.email ? "justify-end" : "justify-start"}`}>
                                                     <div className={`px-4 break-words text-sm  my-1  py-[.5rem] max-w-[60%] ${i.from === user?.user?.email ? " text-white rounded-3xl bg-blue-800 text-right" : "text-left bg-white rounded-3xl"} `}>{i.text}</div>
                                                 </div>
                                             )
