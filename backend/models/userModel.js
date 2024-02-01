@@ -14,8 +14,8 @@ const UserModel = new mongoose.Schema({
         type: String,
         required: true
     },
-    chats: {
-        type: Array
+    status: {
+        type: String,
     }
 }, { versionKey: false, timestamps: true })
 

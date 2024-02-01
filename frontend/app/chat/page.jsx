@@ -8,14 +8,18 @@ import { useSelector } from 'react-redux'
 import "swiper/css";
 import 'swiper/css/free-mode';
 import { BiSolidSend } from "react-icons/bi";
-import { getMsg, postMsg } from '@/utils/routes';
+import { allUsers, getMsg, postMsg } from '@/utils/routes';
 import axios from 'axios';
 import { API } from '@/utils/Api';
+import { Socket, io } from "socket.io-client"
 
 const page = () => {
     const user = useSelector((state) => state.user.user)
     const [value, setValue] = useState('')
     const [data, setData] = useState([])
+    const [messegaes, setMessages] = useState([])
+
+    const socket = io.connect('http://localhost:8080')
 
     const images = [
         { name: "Elisa", image: "https://vice.app/storage/images/RDLWNy35vuGPusZZO2kp42K1G0oWKW0GtIUOhnJr.png", premium: true },
@@ -28,6 +32,11 @@ const page = () => {
         { name: "Test 8", image: "https://vice.app/storage/images/uRE4U5U9t0caHucfWx7SMS1Yag763u4cTIL6bTl2.png", premium: true },
     ]
 
+    const getUsers = async () => {
+        const data = await allUsers()
+        console.log(data)
+    }
+
 
     const changeHandler = (e) => {
         const { value } = e.target
@@ -39,34 +48,51 @@ const page = () => {
             let msg = {
                 text: value,
                 from: user?.user.email,
-                to: "s1@gmail.com"
+                to: "a@gmail.com"
             }
             await postMsg(msg)
+            socket.emit("add-msg", msg)
             setValue("")
+        }
+        else {
+            console.log("not done", user)
         }
     }
     // msg()
 
-    const msg = async () => {
-        const { data } = await axios.post(API.getMsg, { email: "s1@gmail.com" })
-        if (data.data.length) {
-            setData(data.data)
-        }
-    }
+    // const msg = async () => {
+    //     const { data } = await axios.post(API.getMsg, { email: "a@gmail.com" })
+    //     if (data.data.length) {
+    //         setData(data.data)
+    //     }
+    // }
 
     useEffect(() => {
-        msg()
-        // console.log(data)
-    }, [value])
+        socket.on("get-msg", (message) => {
+            setMessages([...messegaes, message])
+        })
+        return () => {
+            socket.on("disconnect")
+        }
+    }, [])
 
-    console.log(data)
+    useEffect(() => {
+        getUsers()
+    }, [])
+
+    // useEffect(() => {
+    //     msg()
+    //     // console.log(data)
+    // }, [value])
+
+    // console.log(data)
 
     return (
         <>
 
             {/* {(typeof window !== "undefined") && (!user?.isLoading) ? */}
             <Layout>
-                <section className='pt-[3.5rem] min-h-screen'>
+                <section className='pt-[3.5rem] min-h-screen relative'>
                     {/* Mobile view */}
                     <nav className='bg-white p-2 sm:hidden shadow-lg'>
                         <Swiper className="mySwiper "
@@ -100,30 +126,37 @@ const page = () => {
                         </Swiper>
                     </nav>
 
+
                     {/* chat section */}
-                    <section className='relative w-full ' style={{ height: "calc(100vh - 130px)" }}>
-                        <div className='absolute w-full p-2 bottom-0 '>
-                            <input type="text" name='text' id='text' value={value} placeholder='send message' autoComplete='off' className='text-lg shadow-x outline-none w-full px-4 py-2 rounded-full' onChange={changeHandler} />
-                            <button className='absolute top-[50%] -translate-y-[50%] right-[6%] text-2xl text-blue-900' onClick={sendMsgHandler}><BiSolidSend /></button>
-                        </div>
-                        <div className='px-4 flex flex-col-reverse overflow-y-auto chat-scroll' style={{ height: "calc(100% - 68px)" }}>
-                            <div className="">
-                                {
-                                    data.length && data.map((i) => {
-                                        return (
-                                            <div key={i._id} className={`flex ${i.from === user?.user.email ? "justify-end" : "justify-start"}`}>
-                                                <div className={`px-3 break-words text-sm shadow-x my-1  py-[.5rem] max-w-[60%] ${i.from === user?.user.email ? " text-white rounded-l-2xl bg-blue-800 text-right" : "text-left bg-sky-200 rounded-r-2xl"} `}>{i.text}</div>
-                                            </div>
-                                        )
-                                    })
-                                }
+                    <div className='flex chat'>
+                        <section className='hidden sm:block min-w-[18rem] shadow-x bg-white'>
+                            hi
+                        </section>
+                        <section className='relative w-full ' >
+                            <div className='absolute w-full p-2 sm:p-4 bottom-0 '>
+                                <input type="text" name='text' id='text' value={value} placeholder='send message' autoComplete='off' className='text-lg shadow-x outline-none w-full px-4 py-2 rounded-full' onChange={changeHandler} />
+                                <button className='absolute top-[50%] -translate-y-[50%] right-[1.2rem] sm:right-[2rem] text-2xl text-blue-900' onClick={sendMsgHandler}><BiSolidSend /></button>
                             </div>
-                        </div>
-                    </section>
+                            <div className='px-4 flex flex-col-reverse overflow-y-auto chat-scroll' style={{ height: "calc(100% - 68px)" }}>
+                                <div className="pt-2">
+                                    {
+                                        messegaes.length && messegaes.map((i) => {
+                                            return (
+                                                <div key={i._id} className={`flex ${i.from === user?.user?.email ? "justify-end" : "justify-start"}`}>
+                                                    <div className={`px-4 break-words text-sm  my-1  py-[.5rem] max-w-[60%] ${i.from === user?.user?.email ? " text-white rounded-3xl bg-blue-800 text-right" : "text-left bg-white rounded-3xl"} `}>{i.text}</div>
+                                                </div>
+                                            )
+                                        })
+                                    }
+                                </div>
+                            </div>
+                        </section>
+                    </div>
                 </section>
             </Layout>
             {/* :
-                <Loader /> */}
+            <Loader /> */}
+            {/* } */}
             {/* } */}
         </>
     )

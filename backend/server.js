@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const { Connection } = require('./config/db');
 const router = require('./routes/userRoute');
 const chatRouter = require('./routes/messageRouter');
+const { Server } = require('socket.io');
 
 Connection()
 
@@ -22,6 +23,29 @@ app.use('/auth', router)
 app.use('/chat', chatRouter)
 
 const PORT = process.env.PORT || 8888;
-app.listen(PORT, () => {
+
+const server = app.listen(PORT, () => {
     console.log('Server is running on port', PORT);
 });
+
+const io = new Server(server, {
+    cors: {
+        origin: ["http://localhost:3000", "http://localhost:3000/chat"]
+    }
+})
+
+global.onlineUsers = new Map();
+
+io.on("connection", (socket) => {
+    console.log("user connected")
+    // global.chatSocket = socket
+    socket.on("add-msg", (userId) => {
+        // onlineUsers.set(userId, socket.id)
+        console.log(userId)
+        io.emit("get-msg", userId)
+    })
+
+    socket.on("disconnect", () => {
+        console.log("user disconnected")
+    })
+})

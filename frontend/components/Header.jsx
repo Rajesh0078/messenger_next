@@ -1,19 +1,14 @@
 "use client"
-import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { useSelector } from "react-redux"
 import { destroyCookie } from "nookies"
 
 const Header = () => {
 
-    const [user, setUser] = useState(null)
-
-    const known = useSelector((state) => state.user)
+    const user = useSelector((state) => state.user)
     const navigate = useRouter()
+    // console.log(user)
 
-    useEffect(() => {
-        setUser(known)
-    }, [known])
 
     const logoutHandler = () => {
         destroyCookie(null, "token")
@@ -22,7 +17,7 @@ const Header = () => {
 
     // console.log(user)
     return (
-        <header className="bg-blue-900 text-white p-4 z-10 fixed top-0 left-0 w-full">
+        <header className="bg-blue-900 text-white p-4 z-10 fixed top-0 left-0 w-full ">
             <div className="relative">
                 <p className="font-medium">Messanger</p>
                 <div className="absolute top-[50%] -translate-y-[50%] right-0">

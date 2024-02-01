@@ -17,6 +17,11 @@ export const getUser = async (token) => {
     return data
 }
 
+export const allUsers = async () => {
+    const { data } = await axios.get(API.allUsers)
+    return data
+}
+
 
 export const postMsg = async (msg) => {
     const { data } = await axios.post(API.postMsg, msg)

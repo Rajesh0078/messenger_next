@@ -36,8 +36,9 @@ export default function Home() {
     let token = await login(formData)
     if (token) {
       setCookie(null, "token", token, { secure: true })
-      // navigate.push("/chat")
-      window.location.reload()
+
+      navigate.push("/chat")
+      // window.location.reload()
       dispatch(fetchUser(token))
     } else {
       console.log("token not found")

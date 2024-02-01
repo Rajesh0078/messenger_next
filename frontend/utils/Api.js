@@ -6,4 +6,5 @@ export const API = {
     getUser: baseUrl + "/auth/getuser",
     postMsg: baseUrl + "/chat/sendmsg",
     getMsg: baseUrl + "/chat/getmsg",
+    allUsers: baseUrl + "/auth/users"
 }

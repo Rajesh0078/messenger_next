@@ -3,9 +3,19 @@
 @tailwind utilities;
 
 
-/* html {
+html {
     overflow-x: hidden;
-} */
+}
+
+.chat{
+    height: calc(100vh - 130px);
+}
+
+@media screen and (min-width:640px) {
+    .chat{
+        height: calc(100vh - 56px);
+    }
+}
 
 .shadow-x {
     box-shadow: 1px 1px .5rem rgba(0, 0, 0, .4);

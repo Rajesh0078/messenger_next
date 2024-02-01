@@ -65,4 +65,13 @@ const getUserCtrl = async (req, res) => {
     }
 }
 
-module.exports = { registerCtrl, loginCtrl, getUserCtrl }
+const allUsers = async (req, res) => {
+    try {
+        const foundUser = await User.find({})
+        res.status(200).json({ success: true, users: foundUser })
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+module.exports = { registerCtrl, loginCtrl, getUserCtrl, allUsers }
