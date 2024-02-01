@@ -17,7 +17,7 @@ const UserModel = new mongoose.Schema({
     status: {
         type: String,
         default: "online"
-    }
+    },
 }, { versionKey: false, timestamps: true })
 
 module.exports = mongoose.model("User", UserModel, "users")
