@@ -10,31 +10,24 @@ import 'swiper/css/free-mode';
 import { BiSolidSend } from "react-icons/bi";
 import { allUsers, postMsg } from '@/utils/routes';
 
-import { Socket, io } from "socket.io-client"
+import { io } from "socket.io-client"
 
 const page = () => {
     const user = useSelector((state) => state.user.user)
     const [value, setValue] = useState('')
     const [messegaes, setMessages] = useState([])
+    const [users, setAllUsers] = useState([])
 
     const socket = io.connect('http://localhost:8080')
 
-    const images = [
-        { name: "Elisa", image: "https://vice.app/storage/images/RDLWNy35vuGPusZZO2kp42K1G0oWKW0GtIUOhnJr.png", premium: true },
-        { name: "Test 2", image: "https://vice.app/storage/images/PyRjecVLWWmuRkxO8LYTfZ2Njy9pE6XXjDy4uRfR.png", premium: true },
-        { name: "Test 3", image: "https://vice.app/storage/images/qhD21cE9RUEETRW1z9q4CZkGXnQSXom1oj7OWXNk.png", premium: false },
-        { name: "Test 4", image: "https://vice.app/storage/images/9oMJhTevhClWevsDmZ0VXeWvPH0h3oTz3PdgmIUe.png", premium: true },
-        { name: "Test 5", image: "https://vice.app/storage/images/svWsol889IkeGIeUSZQ41rJYANTE8OsqDvNYqrMQ.png", premium: false },
-        { name: "Test 6", image: "https://vice.app/storage/images/tf3ze97GKIH1fXI19ijGvFEmr5PFPo0KJR6pES9v.png", premium: false },
-        { name: "Test 7", image: "https://vice.app/storage/images/wByvRvg6vaTkeMiMsjkcz5QTGYD98Y9gO2OCo1I0.png", premium: true },
-        { name: "Test 8", image: "https://vice.app/storage/images/uRE4U5U9t0caHucfWx7SMS1Yag763u4cTIL6bTl2.png", premium: true },
-    ]
-
     const getUsers = async () => {
         const data = await allUsers()
-        console.log(data)
+        if (data?.success) {
+            setAllUsers(data?.users)
+        }
     }
 
+    // console.log(users)
 
     const changeHandler = (e) => {
         const { value } = e.target
@@ -46,7 +39,8 @@ const page = () => {
             let msg = {
                 text: value,
                 from: user?.user.email,
-                to: "a@gmail.com"
+                to: "a@gmail.com",
+                time: new Date().getTime()
             }
             await postMsg(msg)
             socket.emit("add-msg", msg)
@@ -60,7 +54,7 @@ const page = () => {
 
     useEffect(() => {
         socket.on("get-msg", (message) => {
-            setMessages(prevMessages => [...prevMessages, message]);
+            setMessages((prev) => [...prev, message]);
         });
 
         return () => {
@@ -99,7 +93,7 @@ const page = () => {
                             slidesPerView={3}
                             spaceBetween={20}
                         >
-                            {
+                            {/* {
                                 images.map((image, inx) => {
                                     return (
                                         <SwiperSlide className='rounded-full !h-[3.5rem] min-w-[3.5rem] ' key={inx}>
@@ -108,6 +102,18 @@ const page = () => {
                                         </SwiperSlide>
                                     )
                                 })
+                            } */}
+
+                            {
+                                users.length ? users.map((user, inx) => {
+                                    return (
+                                        <SwiperSlide className='bg-gray-200 rounded-full  !h-[3.5rem] text-center min-w-[3.5rem] !flex justify-center items-center' key={inx}>
+                                            <p className='text-2xl border-black my-auto'>{user.username.charAt(0)}</p>
+                                            {/* <img src={image.image} alt={image.name} className='object-top select-none w-full h-full object-cover rounded-full' />
+                                            <p>{image.name}</p> */}
+                                        </SwiperSlide>
+                                    )
+                                }) : ""
                             }
                         </Swiper>
                     </nav>

@@ -14,9 +14,14 @@ const createMSG = async (req, res) => {
 
 const getMSG = async (req, res) => {
     try {
-        const { email } = req.body
+        const { from, to } = req.body
 
-        const data = await Chats.find({ $or: [{ from: email }, { to: email }] })
+        const data = await Chats.find({
+            $or: [
+                { $and: [{ from: from }, { to: to }] },
+                { $and: [{ from: to }, { to: from }] }
+            ]
+        })
         res.status(200).json({
             success: true,
             data: data

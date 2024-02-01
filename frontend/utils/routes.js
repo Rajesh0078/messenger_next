@@ -6,9 +6,9 @@ import { API } from "./Api"
 export const login = async (body) => {
     const { data } = await axios.post(API.login, body)
     if (data.success) {
-        return data.token
+        return data
     } else {
-        return data.message
+        return data
     }
 }
 
@@ -28,7 +28,7 @@ export const postMsg = async (msg) => {
     return data
 }
 
-export const getMsg = async (msg) => {
-    const { data } = await axios.post(API.getMsg, msg)
+export const getMsg = async (email) => {
+    const { data } = await axios.post(API.getMsg, email)
     return data
 }

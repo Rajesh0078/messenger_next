@@ -6,13 +6,14 @@ import { useState } from "react";
 import { setCookie } from "nookies"
 import { useRouter } from "next/navigation";
 import { useDispatch, } from "react-redux";
+
 import { fetchUser } from "@/Store/features/users/userReducer";
+import { toast } from "react-toastify";
 
 export default function Home() {
 
   const navigate = useRouter()
   const dispatch = useDispatch()
-  // const user = useSelector((state) => state.user)
 
 
   const [active, setActive] = useState(true)
@@ -33,15 +34,13 @@ export default function Home() {
 
   const loginHandler = async (e) => {
     e.preventDefault()
-    let token = await login(formData)
-    if (token) {
-      setCookie(null, "token", token, { secure: true })
-
+    let data = await login(formData)
+    if (data?.success) {
+      setCookie(null, "token", data?.token, { secure: true })
       navigate.push("/chat")
-      // window.location.reload()
-      dispatch(fetchUser(token))
+      dispatch(fetchUser(data?.token))
     } else {
-      console.log("token not found")
+      toast.warn(data?.message)
     }
   }
 

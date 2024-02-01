@@ -16,6 +16,7 @@ const UserModel = new mongoose.Schema({
     },
     status: {
         type: String,
+        default: "online"
     }
 }, { versionKey: false, timestamps: true })
 
