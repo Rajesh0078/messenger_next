@@ -4,6 +4,7 @@ import { store } from "./store";
 import { Provider } from "react-redux";
 import { parseCookies } from "nookies"
 import { fetchUser } from "./features/users/userReducer";
+import { fetchAllUser } from "./features/allUsers/allUsersReducer";
 
 export const StoreProvider = ({ children }) => {
     const { token } = parseCookies();
@@ -12,6 +13,7 @@ export const StoreProvider = ({ children }) => {
     useEffect(() => {
         if (token) {
             storeRef.current.dispatch(fetchUser(token));
+            storeRef.current.dispatch(fetchAllUser())
         }
     }, [token]);
 

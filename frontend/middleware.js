@@ -6,10 +6,10 @@ export function middleware(req) {
     const token = req.cookies.has("token")
 
     if (token && url === "http://localhost:3000/") {
-        return NextResponse.redirect("http://localhost:3000/chat")
+        return NextResponse.redirect("http://localhost:3000/communication")
     }
 
-    if (!token && url === "http://localhost:3000/chat") {
+    if (!token && url === "http://localhost:3000/communication") {
         return NextResponse.redirect("http://localhost:3000/")
     }
 }

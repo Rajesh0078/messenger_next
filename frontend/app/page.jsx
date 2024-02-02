@@ -32,21 +32,18 @@ export default function Home() {
     setFormData({ ...formData, [name]: value })
   }
 
-  const loginHandler = async (e) => {
-    e.preventDefault()
+  const loginHandler = async () => {
     let data = await login(formData)
+    console.log("clicked")
     if (data?.success) {
       setCookie(null, "token", data?.token, { secure: true })
-      navigate.push("/chat")
+      navigate.push("/communication")
       dispatch(fetchUser(data?.token))
     } else {
       toast.warn(data?.message)
     }
   }
 
-  // useEffect(() => {
-  //   console.log(user)
-  // }, [user])
 
   return (
     <section className="bg-gray-200 min-h-screen flex justify-center items-center">

@@ -5,10 +5,16 @@ import { API } from "./Api"
 
 export const login = async (body) => {
     const { data } = await axios.post(API.login, body)
-    if (data.success) {
-        return data
+    if (data.token) {
+        return {
+            success: true,
+            token: data.token
+        }
     } else {
-        return data
+        return {
+            success: false,
+            message: "User not found"
+        }
     }
 }
 
@@ -28,7 +34,7 @@ export const postMsg = async (msg) => {
     return data
 }
 
-export const getMsg = async (email) => {
-    const { data } = await axios.post(API.getMsg, email)
+export const getMsg = async (from, to) => {
+    const { data } = await axios.post(API.getMsg, { from: from, to: to })
     return data
 }
