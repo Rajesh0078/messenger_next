@@ -4,7 +4,6 @@ import { StoreProvider } from "@/Store/StoreProvider";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import 'react-chat-elements/dist/main.css'
-
 const inter = Inter({ subsets: ["greek"] });
 
 export const metadata = {

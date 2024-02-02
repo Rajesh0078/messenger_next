@@ -5,15 +5,12 @@ import Image from "next/image";
 import { useState } from "react";
 import { setCookie } from "nookies"
 import { useRouter } from "next/navigation";
-import { useDispatch, } from "react-redux";
 
-import { fetchUser } from "@/Store/features/users/userReducer";
 import { toast } from "react-toastify";
 
 export default function Home() {
 
   const navigate = useRouter()
-  const dispatch = useDispatch()
 
 
   const [active, setActive] = useState(true)
@@ -34,11 +31,9 @@ export default function Home() {
 
   const loginHandler = async () => {
     let data = await login(formData)
-    console.log("clicked")
     if (data?.success) {
-      setCookie(null, "token", data?.token, { secure: true })
-      navigate.push("/communication")
-      dispatch(fetchUser(data?.token))
+      setCookie(null, "token", data?.token, { secure: true, path: "/", maxAge: 3600, })
+      navigate.push("/chat", { scroll: false })
     } else {
       toast.warn(data?.message)
     }
@@ -62,7 +57,7 @@ export default function Home() {
             <div>
               <input type="password" name="password" id="password" placeholder="password" className="w-full outline-none border p-3" required autoComplete="off" onChange={changeHandler} />
             </div>
-            <input type="button" value="Login" className="bg-blue-400 text-white p-2" onClick={loginHandler} />
+            <input type="button" value="Login" className="bg-blue-400 cursor-pointer text-white p-2" onClick={loginHandler} />
           </form>
           <div className="px-5 text-center">
             <div className="flex items-center justify-between">

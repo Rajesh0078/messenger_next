@@ -1,12 +1,11 @@
-"use client"
 import Header from "./Header"
 
 
-const Layout = ({ children }) => {
+const Layout = async ({ children, user }) => {
 
     return (
         <>
-            <Header />
+            <Header user={user} />
             {children}
         </>
     )
