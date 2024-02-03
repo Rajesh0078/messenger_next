@@ -1,36 +1,70 @@
 "use client"
-import { getMsg, postMsg } from '@/utils/routes';
-import React, { useEffect, useState } from 'react'
+import { getMsg, getReciever, postMsg } from '@/utils/routes';
+import React, { useEffect, useRef, useState } from 'react'
 import { MessageList } from 'react-chat-elements'
 import { useForm } from 'react-hook-form';
 import { BiSolidPhoneCall, BiSolidSend, BiSolidVideo } from "react-icons/bi";
 import { io } from 'socket.io-client';
 
+let socket;
 
-const ChatComponent = ({ to, currentUser }) => {
+const ChatComponent = ({ to, currentUser, }) => {
+
+
 
     const { register, handleSubmit, reset } = useForm()
     const [chatList, setChatList] = useState([])
 
     const messageListReferance = React.createRef();
 
-
     const sendMsgHandler = async ({ text }) => {
-        if (text && user?.success) {
+        if (text && currentUser?.email) {
             let msg = {
                 text: text,
-                from: user?.user.email,
-                to: "a@gmail.com",
+                from: currentUser?.email,
+                to: to?.email,
                 time: new Date().getTime()
             }
-            await postMsg(msg)
-            // socket.emit("add-msg", msg)
+            socket.emit("send-message", msg)
             reset({ text: "" })
+            await postMsg(msg)
         }
         else {
-            console.log("not done", user)
+            console.log("not done", currentUser)
         }
     }
+
+
+    function socketInitializer() {
+        fetch("/api/socket");
+
+        socket = io();
+
+        socket.emit("add-user", currentUser.email)
+
+        socket.on("receive-message", async (data) => {
+            if (data.from === currentUser.email) {
+                setChatList((pre) => [...pre, data]);
+            }
+            if ((data.to === currentUser.email) && (data.from === to.email)) {
+                setChatList((pre) => [...pre, data]);
+            }
+
+        });
+
+    }
+
+    useEffect(() => {
+
+        socketInitializer();
+
+        return () => {
+            if (socket) {
+                socket.disconnect();
+            }
+        };
+    }, [to])
+
 
     const createDataSource = () => {
         let arr = []
@@ -46,14 +80,13 @@ const ChatComponent = ({ to, currentUser }) => {
         return arr
     }
 
-    // console.log(currentUser.user)
     const messages = async () => {
         const data = await getMsg(currentUser?.email, to?.email)
         if (data?.success) {
-            // console.log(data)
             setChatList(data.data)
         }
     }
+
     useEffect(() => {
         setChatList([])
         messages()
@@ -62,7 +95,7 @@ const ChatComponent = ({ to, currentUser }) => {
     return (
         <>
             {
-                to?.email ? <div className='w-full pt-[56px] shadow-xl text-white sm:w-[calc(100vw-16rem)] h-dvh md:w-[calc(100vw-20rem)]'>
+                to && to?.email ? <div className='w-full pt-[56px] shadow-xl text-white sm:w-[calc(100vw-16rem)] h-dvh md:w-[calc(100vw-20rem)]'>
                     <div className='px-6 py-2 flex justify-between items-center bg-gray-500'>
                         <div className='flex items-center gap-3'>
                             <div className='w-[3rem] h-[3rem] text-black rounded-full flex text-2xl bg-white'><p className='m-auto'>{to?.username.charAt(0)}</p></div>
@@ -90,6 +123,7 @@ const ChatComponent = ({ to, currentUser }) => {
                             </form>
                         </div>
                     </div>
+                    {/* <MessageComponent toEmail={to?.email} currentUser={currentUser} chatList={chatList} setChatList={setChatList} /> */}
 
                 </div> :
                     <div className='flex w-full justify-center pt-[56px] items-center h-dvh sm:w-[calc(100vw-16rem)] md:w-[calc(100vw-20rem)]'>

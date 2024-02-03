@@ -20,6 +20,7 @@ const Header = ({ user }) => {
                 <div className="absolute top-[50%] -translate-y-[50%] right-0">
                     {user?.username &&
                         <div>
+                            {/* <span onClick={() => navigate.push("/msg", { scroll: false })}>{"Message"}</span> */}
                             <span onClick={() => navigate.push("/profile", { scroll: false })}>{user?.username}</span>
                             <span onClick={logoutHandler} className="bg-gray-100 px-4  cursor-pointer ms-3 py-1 rounded-full text-sm font-medium text-blue-900">Logout</span>
                         </div>

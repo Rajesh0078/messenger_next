@@ -1,6 +1,7 @@
 "use server"
 import axios from "axios"
 import { API } from "./Api"
+import { cookies } from "next/headers"
 
 
 export const login = async (body) => {
@@ -18,8 +19,20 @@ export const login = async (body) => {
     }
 }
 
+export const getReciever = async () => {
+    const receive = await cookies().get("name")
+    console.log(receive)
+    return receive
+}
+
 export const getUser = async (token) => {
     const { data } = await axios.get(API.getUser, { headers: { "x-token": token } })
+    return data
+}
+
+export const fetchUser = async (token) => {
+    const res = await fetch(API.getUser, { headers: { "x-token": token }, })
+    const data = await res.json()
     return data
 }
 
