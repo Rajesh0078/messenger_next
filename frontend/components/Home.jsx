@@ -5,6 +5,7 @@ import ChatComponent from './ChatComponent'
 import { useDispatch } from 'react-redux'
 import { updateReciever, updateUser } from '@/Store/features/toReducer'
 import { io } from 'socket.io-client'
+import axios from 'axios'
 
 
 let socket;
@@ -14,11 +15,22 @@ const Home = ({ allUsers, currentUser }) => {
     const [sendTo, setSendTo] = useState(null)
     const [isNext, setIsNext] = useState(false)
     const dispatch = useDispatch()
+    const [Users, setUsers] = useState(allUsers)
+
+    const getH = async () => {
+        const { data } = await axios.get('https://messanger-j570.onrender.com/auth/users')
+        if (data?.success) {
+            setUsers(data?.users)
+        }
+    }
 
     useEffect(() => {
+        getH()
         dispatch(updateUser(currentUser))
         dispatch(updateReciever(sendTo))
-    }, [currentUser, sendTo])
+    }, [currentUser, sendTo, Users])
+
+
 
     function socketInitializer() {
         fetch("/api/socket");
@@ -54,7 +66,7 @@ const Home = ({ allUsers, currentUser }) => {
             <div className='flex h-full'>
                 <div className={`${isNext ? "hidden" : ""} block h-dvh pt-[56px] z-[10] w-full md:w-[20rem] overflow-y-auto chat-scroll bg-white `}>
                     {
-                        allUsers?.success && allUsers?.users.filter(user => user.username !== currentUser.username).map((i, inx) => {
+                        Users.length && Users.filter(user => user.username !== currentUser.username).map((i, inx) => {
 
                             return (
                                 <ChatItem
