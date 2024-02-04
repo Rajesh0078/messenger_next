@@ -66,9 +66,10 @@ const Header = ({ user }) => {
 
 
         socket.on("notify-request", (obj) => {
+            console.log(obj)
             if (user.email === obj.to) {
                 setNotifications(prev => {
-                    if (!prev.some(item => item.from === obj.from)) {
+                    if (!prev.some(item => item.from.username === obj.from.username)) {
                         return [...prev, obj];
                     }
                     return prev;

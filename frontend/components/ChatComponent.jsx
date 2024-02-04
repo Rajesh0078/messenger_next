@@ -100,7 +100,7 @@ const ChatComponent = ({ to, currentUser, isNext, setIsNext }) => {
     return (
         <>
             {
-                to && to?.email ? <div className={`w-full ${isNext ? "block" : "hidden"} md:block pt-[56px] shadow-xl text-white sm:w-[calc(100vw-16rem)] h-dvh md:w-[calc(100vw-20rem)]`}>
+                to && to?.email ? <div className={`w-full ${isNext ? "block" : "hidden"} md:block pt-[56px] shadow-xl text-white sm:w-[calc(100vw-16rem)] h-dvh md:w-[calc(100vw-0rem)]`}>
                     <div className='px-3 py-2 flex justify-between items-center bg-slate-50 backdrop-blur-md bg-opacity-[50%] shadow'>
                         <div className='flex items-center gap-2 text-black'>
                             <IoArrowBackOutline className='text-2xl cursor-pointer' onClick={() => setIsNext(false)} />
@@ -112,9 +112,8 @@ const ChatComponent = ({ to, currentUser, isNext, setIsNext }) => {
                             <BiSolidVideo className='bg-white shadow text-gray-800 px-2 rounded-full cursor-pointer' />
                         </div>
                     </div>
-                    <div className='flex flex-col h-[calc(100vh-(180px))]'>
+                    <div className='flex flex-col h-[calc(100vh-(180px))] md:h-[calc(100vh-(125px))]'>
                         <div className=' text-black h-[calc(100%-60px)] overflow-y-auto chat-scroll flex flex-col-reverse'>
-
                             <div className='w-full '>
                                 <div className='flex flex-col h-full px-5 pt-1'>
                                     {
