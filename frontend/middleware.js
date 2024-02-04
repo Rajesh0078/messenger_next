@@ -10,7 +10,7 @@ const routes = {
     searchUser: clientUrl + '/user/:[id]'
 }
 
-export function middleware(req) {
+export async function middleware(req) {
     const url = req.url
     const token = req.cookies.has("token")
 
