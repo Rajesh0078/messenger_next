@@ -1,4 +1,4 @@
-export const baseUrl = "http://localhost:8080"
+export const baseUrl = "https://messanger-j570.onrender.com"
 
 export const API = {
     login: baseUrl + "/auth/login",
