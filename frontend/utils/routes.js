@@ -19,6 +19,11 @@ export const login = async (body) => {
     }
 }
 
+export const register = async (body) => {
+    const { data } = await axios.post(API.register, body)
+    return data
+}
+
 export const removeToken = async () => {
     await cookies().delete("token")
 }

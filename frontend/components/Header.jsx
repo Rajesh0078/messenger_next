@@ -77,7 +77,6 @@ const Header = ({ user }) => {
         })
     }
 
-    console.log(notfications)
 
     useEffect(() => {
         socketInitialization()
@@ -90,7 +89,7 @@ const Header = ({ user }) => {
     }, [])
 
     return (
-        <header className="bg-blue-900 text-white py-4 px-6 lg:px-[8%] z-[200] fixed top-0 left-0 w-full ">
+        <header className="bg-blue-900 shadow-x text-white py-4 px-6 lg:px-[8%] z-[200] fixed top-0 left-0 w-full ">
             <div className="relative">
                 <p className="font-medium" onClick={() => navigate.push("/chat", { scroll: false })}>Messanger</p>
                 <div className="absolute top-[50%] -translate-y-[50%] right-0 flex items-center">
