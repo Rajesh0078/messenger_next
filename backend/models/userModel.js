@@ -18,6 +18,21 @@ const UserModel = new mongoose.Schema({
         type: String,
         default: "online"
     },
+    friendsList: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
+    }],
+    notifications: [
+        {
+            sender: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "User"
+            },
+            username: {
+                type: String
+            }
+        }
+    ]
 }, { versionKey: false, timestamps: true })
 
 module.exports = mongoose.model("User", UserModel, "users")

@@ -2,8 +2,11 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { StoreProvider } from "@/Store/StoreProvider";
 import { ToastContainer } from "react-toastify";
+import { AntdRegistry } from '@ant-design/nextjs-registry';
 import 'react-toastify/dist/ReactToastify.css';
 import 'react-chat-elements/dist/main.css'
+
+
 const inter = Inter({ subsets: ["greek"] });
 
 export const metadata = {
@@ -15,9 +18,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${inter.className} bg-gray-200`}>
-        <ToastContainer />
+        <ToastContainer autoClose={1500} />
         <StoreProvider>
-          {children}
+          <AntdRegistry>
+            {children}
+          </AntdRegistry>
         </StoreProvider>
       </body>
     </html>

@@ -74,4 +74,19 @@ const allUsers = async (req, res) => {
     }
 }
 
-module.exports = { registerCtrl, loginCtrl, getUserCtrl, allUsers }
+const searchUser = async (req, res) => {
+    try {
+        const { id } = req.body
+        const user = await User.findById(id)
+        if (user) {
+            res.status(200).json({ success: true, user: user })
+        } else {
+            res.json({ success: false, msg: "User not found" })
+        }
+
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+module.exports = { registerCtrl, loginCtrl, getUserCtrl, allUsers, searchUser }

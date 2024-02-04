@@ -19,6 +19,10 @@ export const login = async (body) => {
     }
 }
 
+export const removeToken = async () => {
+    await cookies().delete("token")
+}
+
 export const getReciever = async () => {
     const receive = await cookies().get("name")
     console.log(receive)
@@ -31,7 +35,7 @@ export const getUser = async (token) => {
 }
 
 export const fetchUser = async (token) => {
-    const res = await fetch(API.getUser, { headers: { "x-token": token }, })
+    const res = await fetch(API.getUser, { headers: { "x-token": token }, cache: "force-cache" })
     const data = await res.json()
     return data
 }
@@ -41,6 +45,19 @@ export const allUsers = async () => {
     return data
 }
 
+
+export const searchUser = async (id) => {
+
+    const response = await fetch(API.findUser, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id: id }),
+    });
+    const data = await response.json()
+    return data
+}
 
 export const postMsg = async (msg) => {
     const { data } = await axios.post(API.postMsg, msg)

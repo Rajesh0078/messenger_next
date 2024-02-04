@@ -7,6 +7,7 @@ const { Connection } = require('./config/db');
 const router = require('./routes/userRoute');
 const chatRouter = require('./routes/messageRouter');
 const { Server } = require('socket.io');
+const notifyRouter = require('./routes/notificationRouter');
 
 Connection()
 
@@ -21,6 +22,7 @@ app.get('/', (req, res) => {
 
 app.use('/auth', router)
 app.use('/chat', chatRouter)
+app.use('/notify', notifyRouter)
 
 const PORT = process.env.PORT || 8888;
 

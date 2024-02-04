@@ -8,8 +8,8 @@ import { redirect } from "next/navigation"
 
 const page = async () => {
     const { value } = cookies().get("token")
-    if (value) {
 
+    if (value) {
         const data = await fetchUser(value)
 
         if (data?.success) {

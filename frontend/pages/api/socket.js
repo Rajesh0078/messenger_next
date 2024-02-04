@@ -18,27 +18,35 @@ export default function SocketHandler(req, res) {
 
         socket.on("add-user", (userId) => {
             onlineUsers.set(userId, socket.id)
+            io.emit("user-status", { userId, status: "online" });
+        })
+
+        socket.on("request", (obj) => {
+            io.emit("notify-request", (obj))
         })
 
         socket.on("send-message", (obj) => {
             const sendUserSocket = onlineUsers.get(obj.to)
-            // if (sendUserSocket) {
-            console.log("message-sended")
-            io.emit("receive-message", obj);
-            // } else {
-            //     console.log("user not in online")
-            // }
+            if (sendUserSocket) {
+                let msg = { ...obj, "read": true }
+                io.emit("receive-message", msg);
+
+            } else {
+                let msg = { ...obj, "read": false }
+                io.emit("receive-message", msg);
+            }
 
         });
 
         socket.on("disconnect", () => {
             for (const [key, value] of global.onlineUsers) {
                 if (value === socket.id) {
+                    io.emit("user-status", { userId: key, status: "offline" });
                     global.onlineUsers.delete(key);
                     break;
                 }
             }
-            console.log("Connection disconnected");
+            // console.log(onlineUsers)
         });
     });
 

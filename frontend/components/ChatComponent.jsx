@@ -1,21 +1,19 @@
 "use client"
-import { getMsg, getReciever, postMsg } from '@/utils/routes';
-import React, { useEffect, useRef, useState } from 'react'
-import { MessageList } from 'react-chat-elements'
+import { getMsg, postMsg } from '@/utils/routes';
+import React, { useEffect, useState } from 'react'
+import { IoCheckmarkDoneSharp, IoCheckmarkSharp } from "react-icons/io5";
 import { useForm } from 'react-hook-form';
 import { BiSolidPhoneCall, BiSolidSend, BiSolidVideo } from "react-icons/bi";
+import { toast } from 'react-toastify';
 import { io } from 'socket.io-client';
 
 let socket;
 
 const ChatComponent = ({ to, currentUser, }) => {
 
-
-
     const { register, handleSubmit, reset } = useForm()
     const [chatList, setChatList] = useState([])
 
-    const messageListReferance = React.createRef();
 
     const sendMsgHandler = async ({ text }) => {
         if (text && currentUser?.email) {
@@ -23,7 +21,8 @@ const ChatComponent = ({ to, currentUser, }) => {
                 text: text,
                 from: currentUser?.email,
                 to: to?.email,
-                time: new Date().getTime()
+                time: new Date().getTime(),
+                receiverName: to?.username
             }
             socket.emit("send-message", msg)
             reset({ text: "" })
@@ -40,14 +39,18 @@ const ChatComponent = ({ to, currentUser, }) => {
 
         socket = io();
 
-        socket.emit("add-user", currentUser.email)
+        // socket.emit("add-user", currentUser.email)
 
         socket.on("receive-message", async (data) => {
             if (data.from === currentUser.email) {
                 setChatList((pre) => [...pre, data]);
             }
-            if ((data.to === currentUser.email) && (data.from === to.email)) {
-                setChatList((pre) => [...pre, data]);
+            if ((data.to === currentUser.email)) {
+                if (data.from === to.email) {
+                    setChatList((pre) => [...pre, data]);
+                } else {
+                    toast.info("Message from " + data.receiverName)
+                }
             }
 
         });
@@ -73,7 +76,9 @@ const ChatComponent = ({ to, currentUser, }) => {
                 ...i,
                 ['type']: typeof i.text === "string" && "text",
                 ['position']: currentUser?.email === i.from ? "right" : "left",
-                ['date']: new Date(i.time)
+                ['date']: new Date(i.time),
+                ['hrs']: new Date(i.time).getHours(),
+                ['min']: new Date(i.time).getMinutes()
             }
             arr.push(obj)
         })
@@ -96,30 +101,57 @@ const ChatComponent = ({ to, currentUser, }) => {
         <>
             {
                 to && to?.email ? <div className='w-full pt-[56px] shadow-xl text-white sm:w-[calc(100vw-16rem)] h-dvh md:w-[calc(100vw-20rem)]'>
-                    <div className='px-6 py-2 flex justify-between items-center bg-gray-500'>
-                        <div className='flex items-center gap-3'>
-                            <div className='w-[3rem] h-[3rem] text-black rounded-full flex text-2xl bg-white'><p className='m-auto'>{to?.username.charAt(0)}</p></div>
-                            {to.email}
+                    <div className='px-6 py-2 flex justify-between items-center bg-slate-50 backdrop-blur-md bg-opacity-[50%] shadow'>
+                        <div className='flex items-center gap-3 text-black'>
+                            <div className='w-[3rem] h-[3rem] text-black rounded-full flex text-2xl shadow bg-white'><p className='m-auto'>{to?.username.charAt(0)}</p></div>
+                            {to.username}
                         </div>
                         <div className='text-4xl flex gap-2'>
-                            <BiSolidPhoneCall className='bg-white text-gray-800 px-2 rounded-full cursor-pointer' />
-                            <BiSolidVideo className='bg-white text-gray-800 px-2 rounded-full cursor-pointer' />
+                            <BiSolidPhoneCall className='bg-white shadow text-gray-800 px-2 rounded-full cursor-pointer' />
+                            <BiSolidVideo className='bg-white shadow text-gray-800 px-2 rounded-full cursor-pointer' />
                         </div>
                     </div>
                     <div className='flex flex-col h-[calc(100vh-(120px))]'>
-                        <div className=' text-black h-[calc(100%-60px)]'>
-                            <MessageList
-                                referance={messageListReferance}
-                                className='message-list'
-                                lockable={true}
-                                toBottomHeight={'0%'}
-                                dataSource={createDataSource()}
-                            />
+                        <div className=' text-black h-[calc(100%-60px)] overflow-y-auto chat-scroll flex flex-col-reverse'>
+
+                            <div className='w-full '>
+                                <div className='flex flex-col h-full px-5 pt-1'>
+                                    {
+                                        createDataSource().map((i, inx) => {
+                                            return (
+                                                <div key={inx} className={`${i.position === "right" ? "self-end text-white !bg-blue-800 rounded-l-3xl rounded-r-[4px]  ps-4 pe-2" : "self-start ps-2 pe-3 rounded-r-3xl rounded-l-[4px]"} max-w-[84%] sm:max-w-[70%]  md:max-w-[45%] bg-white   my-[1px]`}>
+                                                    <div className='flex'>
+                                                        <p className='py-2 '>{i.text}</p>
+                                                        {i.position === "right" ?
+                                                            <p className='text-[10px] mt-[1.9px] self-end ms-3 min-w-[4.2rem] text-right'>
+                                                                {i.hrs > 12 ? (i.hrs - 12 + ":" + i.min + " pm") : i.hrs + ":"}
+                                                                <span className='ms-1 text-[1.2rem]'>
+                                                                    {
+                                                                        i?.read ?
+                                                                            <IoCheckmarkDoneSharp className='inline' />
+                                                                            :
+                                                                            <IoCheckmarkSharp className='inline ' />
+                                                                    }
+                                                                </span>
+                                                            </p> :
+                                                            <p className='text-[10px] self-end ms-4 mb-1'>
+                                                                {i.hrs > 12 ? (i.hrs - 12 + ":" + i.min + " pm") : i.hrs + ":"}
+
+                                                            </p>
+                                                        }
+
+                                                    </div>
+                                                </div>
+                                            )
+                                        })
+                                    }
+                                </div>
+                            </div>
                         </div>
                         <div className=' w-full px-3 sm:px-4 py-2 '>
                             <form onSubmit={handleSubmit(sendMsgHandler)} className='relative'>
-                                <input type='text' {...register("text")} placeholder='send message' autoComplete='off' className='text-lg bg-gray-900 text-white shadow-x outline-none w-full px-4 py-2 rounded-full' />
-                                <button className='absolute top-[50%] -translate-y-[50%] right-[1.2rem] sm:right-[2rem] text-2xl text-gray-200' type='submit' ><BiSolidSend /></button>
+                                <input type='text' {...register("text")} placeholder='send message' autoComplete='off' className='text-lg bg-white text-black shadow-x outline-none w-full px-4 py-2 rounded-full' />
+                                <button className='absolute top-[50%] -translate-y-[50%] right-[1.2rem] sm:right-[.8rem] text-2xl text-blue-900' type='submit' ><BiSolidSend /></button>
                             </form>
                         </div>
                     </div>

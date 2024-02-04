@@ -10,6 +10,18 @@ html {
 .chat {
     height: calc(100vh - 130px);
 }
+.myMsg{
+    @apply !min-w-[2px]
+}
+.rce-mbox-text::after{
+    content: "" !important;
+}
+.myMsg .rce-mbox{
+    @apply !px-[9px] !py-[3px] !bg-white !max-w-[40%] !w-auto
+}
+.rce-mbox-right-notch{
+    @apply !hidden
+}
 
 @media screen and (min-width:640px) {
     .chat {
@@ -25,9 +37,15 @@ html {
     width: 0;
 }
 
-.rce-mbox.rce-mbox-right,
+/* .rce-mbox.rce-mbox-right,
 .rce-mbox.left {
     margin: 1px 20px 1px 5px !important;
+} */
+
+.ant-btn{
+    height: 2.5rem !important;
+    background: none !important;
+    border: none !important;
 }
 
 .loader {
