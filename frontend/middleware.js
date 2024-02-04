@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-const clientUrl = "http://localhost:3000/"
+const clientUrl = "https://messenger-next.onrender.com/"
 
 const routes = {
     chat: clientUrl + "chat",
