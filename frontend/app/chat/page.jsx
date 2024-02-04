@@ -7,10 +7,10 @@ import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
 
 const page = async () => {
-    const { value } = cookies().get("token")
+    const isToken = cookies().get("token")?.value
 
-    if (value) {
-        const data = await fetchUser(value)
+    if (isToken) {
+        const data = await fetchUser(isToken)
 
         if (data?.success) {
             const call = await fetch(API.allUsers, { cache: "force-cache" })

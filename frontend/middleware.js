@@ -3,18 +3,21 @@ import { NextResponse } from "next/server";
 const clientUrl = "https://messenger-next.onrender.com/"
 
 const routes = {
-    chat: clientUrl + "chat",
-    settings: clientUrl + "settings",
-    search: clientUrl + "search",
-    profile: clientUrl + "profile",
-    searchUser: clientUrl + '/user/:[id]'
+    chat: "/chat",
+    settings: "/settings",
+    search: "/search",
+    profile: "/profile",
+    searchUser: '/user/:[id]'
 }
 
 export async function middleware(req) {
-    const url = req.url
-    const token = req.cookies.has("token")
 
-    if (token && url === clientUrl) {
+    const path = req.nextUrl.pathname
+
+    const isPublicPath = path === "/"
+    const token = req.cookies.get('token')?.value
+
+    if (token && isPublicPath) {
         return NextResponse.redirect(routes.chat)
     }
     if (!token && (
@@ -23,11 +26,11 @@ export async function middleware(req) {
         url === routes.search ||
         url === routes.settings
     )) {
-        return NextResponse.redirect(clientUrl);
+        return NextResponse.redirect("/");
     }
 
     if (!token && url.includes("/user/")) {
-        return NextResponse.redirect(clientUrl);
+        return NextResponse.redirect("/");
     }
 }
 
