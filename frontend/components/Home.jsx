@@ -5,14 +5,14 @@ import ChatComponent from './ChatComponent'
 import { useDispatch } from 'react-redux'
 import { updateReciever, updateUser } from '@/Store/features/toReducer'
 import { io } from 'socket.io-client'
-import { toast } from 'react-toastify'
+
 
 let socket;
 
 const Home = ({ allUsers, currentUser }) => {
 
     const [sendTo, setSendTo] = useState(null)
-    const [onlineUsers, setOnlineUsers] = useState([])
+    const [isNext, setIsNext] = useState(false)
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -52,7 +52,7 @@ const Home = ({ allUsers, currentUser }) => {
     return (
         <div className='w-full  min-h-screen'>
             <div className='flex h-full'>
-                <div className='hidden sm:block h-dvh pt-[56px] z-[10] sm:w-[16rem] md:w-[20rem] overflow-y-auto chat-scroll bg-white '>
+                <div className={`${isNext ? "hidden" : ""} block h-dvh pt-[56px] z-[10] w-full md:w-[20rem] overflow-y-auto chat-scroll bg-white `}>
                     {
                         allUsers?.success && allUsers?.users.filter(user => user.username !== currentUser.username).map((i, inx) => {
 
@@ -65,7 +65,7 @@ const Home = ({ allUsers, currentUser }) => {
                                     subtitle={'Latest msg'}
                                     date={new Date().setDate(new Date().getDate() - 62)}
                                     unread={2}
-                                    onClick={() => { setSendTo(i); dispatch(updateReciever(i)) }}
+                                    onClick={() => { setSendTo(i); dispatch(updateReciever(i)); setIsNext(true) }}
                                 />
                             )
                         })
@@ -73,7 +73,7 @@ const Home = ({ allUsers, currentUser }) => {
                 </div>
 
                 {sendTo?.email &&
-                    <ChatComponent to={sendTo} currentUser={currentUser} />
+                    <ChatComponent to={sendTo} currentUser={currentUser} isNext={isNext} setIsNext={setIsNext} />
                 }
             </div>
         </div>

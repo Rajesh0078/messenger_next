@@ -1,7 +1,7 @@
 "use client"
 import { getMsg, postMsg } from '@/utils/routes';
 import React, { useEffect, useState } from 'react'
-import { IoCheckmarkDoneSharp, IoCheckmarkSharp } from "react-icons/io5";
+import { IoArrowBackOutline, IoCheckmarkDoneSharp, IoCheckmarkSharp } from "react-icons/io5";
 import { useForm } from 'react-hook-form';
 import { BiSolidPhoneCall, BiSolidSend, BiSolidVideo } from "react-icons/bi";
 import { toast } from 'react-toastify';
@@ -9,7 +9,7 @@ import { io } from 'socket.io-client';
 
 let socket;
 
-const ChatComponent = ({ to, currentUser, }) => {
+const ChatComponent = ({ to, currentUser, isNext, setIsNext }) => {
 
     const { register, handleSubmit, reset } = useForm()
     const [chatList, setChatList] = useState([])
@@ -100,9 +100,10 @@ const ChatComponent = ({ to, currentUser, }) => {
     return (
         <>
             {
-                to && to?.email ? <div className='w-full pt-[56px] shadow-xl text-white sm:w-[calc(100vw-16rem)] h-dvh md:w-[calc(100vw-20rem)]'>
-                    <div className='px-6 py-2 flex justify-between items-center bg-slate-50 backdrop-blur-md bg-opacity-[50%] shadow'>
-                        <div className='flex items-center gap-3 text-black'>
+                to && to?.email ? <div className={`w-full ${isNext ? "block" : "hidden"} md:block pt-[56px] shadow-xl text-white sm:w-[calc(100vw-16rem)] h-dvh md:w-[calc(100vw-20rem)]`}>
+                    <div className='px-3 py-2 flex justify-between items-center bg-slate-50 backdrop-blur-md bg-opacity-[50%] shadow'>
+                        <div className='flex items-center gap-2 text-black'>
+                            <IoArrowBackOutline className='text-2xl cursor-pointer' onClick={() => setIsNext(false)} />
                             <div className='w-[3rem] h-[3rem] text-black rounded-full flex text-2xl shadow bg-white'><p className='m-auto'>{to?.username.charAt(0)}</p></div>
                             {to.username}
                         </div>
@@ -111,7 +112,7 @@ const ChatComponent = ({ to, currentUser, }) => {
                             <BiSolidVideo className='bg-white shadow text-gray-800 px-2 rounded-full cursor-pointer' />
                         </div>
                     </div>
-                    <div className='flex flex-col h-[calc(100vh-(120px))]'>
+                    <div className='flex flex-col h-[calc(100vh-(180px))]'>
                         <div className=' text-black h-[calc(100%-60px)] overflow-y-auto chat-scroll flex flex-col-reverse'>
 
                             <div className='w-full '>

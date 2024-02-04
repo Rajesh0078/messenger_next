@@ -8,7 +8,6 @@ import { redirect } from "next/navigation"
 
 const page = async () => {
     const isToken = cookies().get("token")?.value
-
     if (isToken) {
         const data = await fetchUser(isToken)
 
