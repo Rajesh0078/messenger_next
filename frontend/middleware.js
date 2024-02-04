@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
-const clientUrl = "https://messenger-next.onrender.com/"
+const url = "https://messenger-next.onrender.com/"
+// const url = "http://localhost:3000"
 
 const routes = {
     chat: "/chat",
@@ -18,19 +19,19 @@ export async function middleware(req) {
     const token = req.cookies.get('token')?.value
 
     if (token && isPublicPath) {
-        return NextResponse.redirect(routes.chat)
+        return NextResponse.redirect(url + routes.chat)
     }
     if (!token && (
-        url === routes.chat ||
-        url === routes.profile ||
-        url === routes.search ||
-        url === routes.settings
+        path === routes.chat ||
+        path === routes.profile ||
+        path === routes.search ||
+        path === routes.settings
     )) {
-        return NextResponse.redirect("/");
+        return NextResponse.redirect(url);
     }
 
-    if (!token && url.includes("/user/")) {
-        return NextResponse.redirect("/");
+    if (!token && path.includes("/user/")) {
+        return NextResponse.redirect(url);
     }
 }
 
