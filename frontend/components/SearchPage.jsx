@@ -49,6 +49,8 @@ const SearchPage = ({ currentUser, users }) => {
 
     }, [])
 
+
+
     return (
         <>
             {
@@ -65,7 +67,7 @@ const SearchPage = ({ currentUser, users }) => {
 
                     {/* desktop view */}
                     <div className='border basis-2/5 xl:basis-1/4 shadow-xl md:block hidden min-h-[calc(100vh-56px)] '>filter </div>
-                    <div className='border basis-5/6 p-4 py-4 flex flex-wrap justify-evenly gap-5'>
+                    {/* <div className='border basis-5/6 p-4 py-4 flex flex-wrap justify-evenly gap-5'>
                         {
                             onlineUsers.filter((i) => i.email !== currentUser?.email).map((i, inx) => {
                                 return (
@@ -81,7 +83,45 @@ const SearchPage = ({ currentUser, users }) => {
                                 )
                             })
                         }
+                    </div> */}
+                    <div className="border basis-5/6 p-4 py-4 flex flex-wrap justify-evenly gap-5">
+                        {/* <Swiper
+                            grabCursor={true}
+                            effect={'creative'}
+                            creativeEffect={{
+                                prev: {
+                                    shadow: true,
+                                    translate: [0, 0, -400],
+                                },
+                                next: {
+                                    translate: ['100%', 0, 0],
+                                },
+                            }}
+                            modules={[EffectCreative]}
+                            className="mySwiper"
+                            slidesPerGroup={1}
+                        >
+                            {
+                                onlineUsers.filter((i) => i.email !== currentUser?.email).map((i, inx) => {
+                                    return (
+                                        <SwiperSlide key={inx}>
+                                            <div onClick={() => navigate.push(`/user/${i._id}`, { scroll: false })} className="bg-gray-300 hover:scale-105 cursor-pointer ease-linear duration-100 transition-transform shadow-xl pt-2 h-full w-full rounded-xl relative">
+                                                <img src={"https://cdn-icons-png.flaticon.com/512/21/21104.png"} alt="imhha" className="h-full rounded-b-xl object-cover opacity-[60%] mx-auto" />
+                                                <div className="bg-gray-700 bg-opacity-[80%] rounded-b-xl absolute bottom-0 py-1 text-center text-white w-full text-xs">
+                                                    <p className="font-medium">{i.username}</p>
+                                                    <p>{i.email}</p>
+                                                </div>
+                                                <div className={`${i.online === "online" ? "block" : "hidden"} bg-blue-600 h-4 w-4 absolute left-2 rounded-full top-2 `}>
+                                                </div>
+                                            </div>
+                                        </SwiperSlide>
+                                    )
+                                })
+                            }
+                        </Swiper> */}
+
                     </div>
+
                 </div>
             }
             {

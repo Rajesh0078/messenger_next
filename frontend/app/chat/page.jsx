@@ -1,5 +1,6 @@
 import Home from "@/components/Home"
 import Layout from "@/components/Layout"
+import Loader from "@/components/Loader"
 import { API } from "@/utils/Api"
 import { fetchUser } from "@/utils/routes"
 
@@ -10,7 +11,6 @@ const page = async () => {
     const isToken = cookies().get("token")?.value
     if (isToken) {
         const data = await fetchUser(isToken)
-
         if (data?.success) {
             const call = await fetch(API.allUsers, { cache: "force-cache" })
             const allUsers = await call.json()
@@ -21,6 +21,8 @@ const page = async () => {
             )
         } else if (data?.error) {
             redirect("/")
+        } else {
+            return <Loader />
         }
     } else {
         redirect("/")

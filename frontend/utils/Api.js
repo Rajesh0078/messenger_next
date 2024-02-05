@@ -12,3 +12,11 @@ export const API = {
     getNotification: baseUrl + "/notify/getnotification"
 }
 
+export const clientRoutes = {
+    home: "/",
+    chat: "/chat",
+    search: "/search",
+    profile: "/profile",
+    settings: "/settings",
+    searchedUser: "/user/:id"
+}
