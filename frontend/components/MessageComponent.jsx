@@ -79,7 +79,7 @@ const MessageComponent = ({ currentUser, toEmail, chatList, setChatList }) => {
                     dataSource={createDataSource()}
                 />
             </div>
-            <div className=' w-full px-3 sm:px-4 py-2 '>
+            <div className=' w-full px-3 sm:px-4 py-2'>
                 <form onSubmit={handleSubmit(sendMsgHandler)} className='relative'>
                     <input type='text' {...register("text")} placeholder='send message' autoComplete='off' className='text-lg bg-gray-900 text-white shadow-x outline-none w-full px-4 py-2 rounded-full' />
                     <button className='absolute top-[50%] -translate-y-[50%] right-[1.2rem] sm:right-[2rem] text-2xl text-gray-200' type='submit' ><BiSolidSend /></button>

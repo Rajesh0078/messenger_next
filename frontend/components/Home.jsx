@@ -28,7 +28,7 @@ const Home = ({ allUsers, currentUser }) => {
         getH()
         dispatch(updateUser(currentUser))
         dispatch(updateReciever(sendTo))
-    }, [currentUser, sendTo, Users])
+    }, [currentUser, sendTo,])
 
 
 
