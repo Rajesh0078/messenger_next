@@ -35,7 +35,6 @@ export default function SocketHandler(req, res) {
                 let msg = { ...obj, "read": false }
                 io.emit("receive-message", msg);
             }
-
         });
 
         socket.on("disconnect", () => {

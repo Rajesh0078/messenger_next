@@ -1,5 +1,5 @@
 "use client"
-import { getMsg, postMsg } from '@/utils/routes';
+import { getMsg, openMsg, postMsg, sendMsg } from '@/utils/routes';
 import React, { useEffect, useState } from 'react'
 import { IoArrowBackOutline, IoCheckmarkDoneSharp, IoCheckmarkSharp } from "react-icons/io5";
 import { useForm } from 'react-hook-form';
@@ -13,6 +13,7 @@ const ChatComponent = ({ to, currentUser, isNext, setIsNext }) => {
 
     const { register, handleSubmit, reset } = useForm()
     const [chatList, setChatList] = useState([])
+    const [msgList, setMsgList] = useState([])
 
 
     const sendMsgHandler = async ({ text }) => {
@@ -27,11 +28,33 @@ const ChatComponent = ({ to, currentUser, isNext, setIsNext }) => {
             socket.emit("send-message", msg)
             reset({ text: "" })
             await postMsg(msg)
+
         }
         else {
             console.log("not done", currentUser)
         }
     }
+
+    // const msgHandler = async ({ text }) => {
+    //     if (text) {
+    //         const data = await sendMsg(currentUser.id, to.id, text)
+    //         console.log(data)
+    //         reset({ text: "" })
+    //     }
+    // }
+
+
+
+    useEffect(() => {
+        const updateMSG = async () => {
+            const data = await openMsg()
+            const arr = data.data
+            const filtered = arr.filter((i) => i.message_from === currentUser.id && i.message_to === to.id)
+            setMsgList(filtered)
+        }
+
+        updateMSG()
+    }, [to])
 
 
     function socketInitializer() {
@@ -83,6 +106,19 @@ const ChatComponent = ({ to, currentUser, isNext, setIsNext }) => {
             arr.push(obj)
         })
         return arr
+        // let arr = []
+        // msgList.forEach((i) => {
+        //     let obj = {
+        //         ...i,
+        //         ['type']: typeof i.text === "string" && "text",
+        //         ['position']: currentUser?.id === i.message_from ? "right" : "left",
+        //         ['date']: new Date(i.time),
+        //         ['hrs']: new Date(i.time).getHours(),
+        //         ['min']: new Date(i.time).getMinutes()
+        //     }
+        //     arr.push(obj)
+        // })
+        // return arr
     }
 
     const messages = async () => {
@@ -135,7 +171,7 @@ const ChatComponent = ({ to, currentUser, isNext, setIsNext }) => {
                                                                 </span>
                                                             </p> :
                                                             <p className='text-[10px] self-end ms-4 mb-1'>
-                                                                {i.hrs > 12 ? (i.hrs - 12 + ":" + i.min + " pm") : i.hrs + ":"}
+                                                                {i.hrs > 12 ? (i.hrs - 12 + ":" + i.min + " pm") : i.hrs + ":" + i.min + " am"}
 
                                                             </p>
                                                         }
@@ -149,7 +185,7 @@ const ChatComponent = ({ to, currentUser, isNext, setIsNext }) => {
                             </div>
                         </div>
                         <div className=' w-full px-3 sm:px-4 py-2 '>
-                            <form onSubmit={handleSubmit(sendMsgHandler)} className='relative'>
+                            <form onSubmit={handleSubmit(msgHandler)} className='relative'>
                                 <input type='text' {...register("text")} placeholder='send message' autoComplete='off' className='text-lg bg-white text-black shadow-x outline-none w-full px-4 py-2 rounded-full' />
                                 <button className='absolute top-[50%] -translate-y-[50%] right-[1.2rem] sm:right-[.8rem] text-2xl text-blue-900' type='submit' ><BiSolidSend /></button>
                             </form>

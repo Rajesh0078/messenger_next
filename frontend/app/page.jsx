@@ -35,7 +35,8 @@ export default function Home() {
 		setFormData({ ...formData, [name]: value })
 	}
 
-	const loginHandler = async () => {
+	const loginHandler = async (e) => {
+		e.preventDefault()
 		let data = await login(formData)
 		if (data?.success) {
 			setCookie(null, "token", data?.token, { secure: true, path: "/", maxAge: 3600, })
@@ -75,14 +76,14 @@ export default function Home() {
 					</div>
 					{active &&
 						<>
-							<form className="w-full p-5 flex flex-col gap-5" >
+							<form className="w-full p-5 flex flex-col gap-5" onSubmit={loginHandler} >
 								<div>
 									<input type="email" name="email" id="email" placeholder="Email" className="w-full outline-none border p-3" required autoComplete="off" onChange={changeHandler} />
 								</div>
 								<div>
 									<input type="password" name="password" id="password" placeholder="password" className="w-full outline-none border p-3" required autoComplete="off" onChange={changeHandler} />
 								</div>
-								<input type="button" value="Login" className="bg-blue-400 cursor-pointer text-white p-2" onClick={loginHandler} />
+								<input type="submit" value="Login" className="bg-blue-400 cursor-pointer text-white p-2" />
 							</form>
 							<div className="px-5 text-center">
 								<div className="flex items-center justify-between py-1">

@@ -1,16 +1,18 @@
 "use client"
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ChatItem } from 'react-chat-elements'
 import ChatComponent from './ChatComponent'
 import { useDispatch } from 'react-redux'
 import { updateReciever, updateUser } from '@/Store/features/toReducer'
 import { io } from 'socket.io-client'
 import axios from 'axios'
+import { toast } from 'react-toastify'
 
 
 let socket;
 
 const Home = ({ allUsers, currentUser }) => {
+
 
     const [sendTo, setSendTo] = useState(null)
     const [isNext, setIsNext] = useState(false)
@@ -23,6 +25,8 @@ const Home = ({ allUsers, currentUser }) => {
             setUsers(data?.users)
         }
     }
+
+
 
     useEffect(() => {
         getH()
@@ -40,6 +44,7 @@ const Home = ({ allUsers, currentUser }) => {
         socket.on("connect", () => {
             socket.emit("add-user", currentUser.email)
         })
+
 
         socket.on("user-status", ({ userId, status }) => {
             if (userId !== currentUser?.email) {
@@ -59,6 +64,8 @@ const Home = ({ allUsers, currentUser }) => {
         }
 
     }, [])
+
+
 
 
     return (

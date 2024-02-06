@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
-const c = "https://messenger-next.onrender.com"
-const url = "http://localhost:3000"
+const url = "https://messenger-next.onrender.com"
+// const url = "http://localhost:3000"
 
 const routes = {
     chat: "/chat",

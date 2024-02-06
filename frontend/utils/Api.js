@@ -9,7 +9,8 @@ export const API = {
     allUsers: baseUrl + "/auth/users",
     findUser: baseUrl + '/auth/finduser',
     setNotification: baseUrl + "/notify/setnotification",
-    getNotification: baseUrl + "/notify/getnotification"
+    getNotification: baseUrl + "/notify/getnotification",
+    sendMsg: "https://1fb9-2401-4900-1f3f-43f5-9b3-e77a-c83d-7f4e.ngrok-free.app/sugerElite/chat/send"
 }
 
 export const clientRoutes = {

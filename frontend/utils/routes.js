@@ -73,3 +73,15 @@ export const getMsg = async (from, to) => {
     const { data } = await axios.post(API.getMsg, { from: from, to: to })
     return data
 }
+
+export const sendMsg = async (from, to, text) => {
+    let obj = { message_from: from, message_to: to, message: text }
+    obj = new URLSearchParams(obj).toString()
+    const data = await axios.get(`${API.sendMsg}?${obj}`)
+    return data
+}
+
+export const openMsg = async () => {
+    const data = await axios.get("https://1fb9-2401-4900-1f3f-43f5-9b3-e77a-c83d-7f4e.ngrok-free.app/sugerElite/chat/list")
+    return data.data
+}

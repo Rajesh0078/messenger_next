@@ -14,6 +14,7 @@ const page = async () => {
         if (data?.success) {
             const call = await fetch(API.allUsers, { cache: "force-cache" })
             const allUsers = await call.json()
+
             return (
                 <Layout user={data?.user} >
                     <Home allUsers={allUsers} currentUser={data?.user} />
