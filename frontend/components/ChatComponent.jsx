@@ -45,16 +45,16 @@ const ChatComponent = ({ to, currentUser, isNext, setIsNext }) => {
 
 
 
-    useEffect(() => {
-        const updateMSG = async () => {
-            const data = await openMsg()
-            const arr = data.data
-            const filtered = arr.filter((i) => i.message_from === currentUser.id && i.message_to === to.id)
-            setMsgList(filtered)
-        }
+    // useEffect(() => {
+    //     const updateMSG = async () => {
+    //         const data = await openMsg()
+    //         const arr = data.data
+    //         const filtered = arr.filter((i) => i.message_from === currentUser.id && i.message_to === to.id)
+    //         setMsgList(filtered)
+    //     }
 
-        updateMSG()
-    }, [to])
+    //     updateMSG()
+    // }, [to])
 
 
     function socketInitializer() {
@@ -185,7 +185,7 @@ const ChatComponent = ({ to, currentUser, isNext, setIsNext }) => {
                             </div>
                         </div>
                         <div className=' w-full px-3 sm:px-4 py-2 '>
-                            <form onSubmit={handleSubmit(msgHandler)} className='relative'>
+                            <form onSubmit={handleSubmit(sendMsgHandler)} className='relative'>
                                 <input type='text' {...register("text")} placeholder='send message' autoComplete='off' className='text-lg bg-white text-black shadow-x outline-none w-full px-4 py-2 rounded-full' />
                                 <button className='absolute top-[50%] -translate-y-[50%] right-[1.2rem] sm:right-[.8rem] text-2xl text-blue-900' type='submit' ><BiSolidSend /></button>
                             </form>
