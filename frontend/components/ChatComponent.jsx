@@ -160,7 +160,7 @@ const ChatComponent = ({ to, currentUser, isNext, setIsNext }) => {
                                                         <p className='py-2 '>{i.text}</p>
                                                         {i.position === "right" ?
                                                             <p className='text-[10px] mt-[1.9px] self-end ms-3 min-w-[4.2rem] text-right'>
-                                                                {i.hrs > 12 ? (i.hrs - 12 + ":" + i.min + " pm") : i.hrs + ":"}
+                                                                {i.hrs > 12 ? (i.hrs - 12 + ":" + i.min + " pm") : i.hrs + ":" + i.min + " am"}
                                                                 <span className='ms-1 text-[1.2rem]'>
                                                                     {
                                                                         i?.read ?
