@@ -17,7 +17,9 @@ const page = async () => {
             const allUsers = await call.json()
             return (
                 <Layout user={data?.user} >
-                    <SearchPage currentUser={data?.user} users={allUsers} />
+                    <div className="flex justify-center">
+                        <SearchPage currentUser={data?.user} users={allUsers} />
+                    </div>
                 </Layout>
             )
         } else if (data?.error) {
