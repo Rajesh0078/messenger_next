@@ -93,7 +93,7 @@ const SearchPage = ({ currentUser, users }) => {
     <>
       {
         onlineUsers.length &&
-        <div className='pt-[56px] flex flex-col md:flex-row'>
+        <div className='pt-[56px] w-full flex flex-col md:flex-row'>
           {/* Mobile view */}
           <div className='border hidden justify-between shadow-lg px-4 py-2 text-center '>
             <div className="font-bold text-lg">Filter</div>
