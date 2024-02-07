@@ -94,4 +94,5 @@ html {
 
 .moving.character-card {
     transition: none;
+    @apply cursor-grabbing
 }
