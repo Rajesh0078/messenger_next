@@ -23,7 +23,7 @@ const ChatComponent = ({ to, currentUser, isNext, setIsNext }) => {
                 message_from: currentUser?.email,
                 message_to: to?.email,
                 time: new Date().getTime(),
-                receiverName: to?.username
+                receiverName: currentUser?.username
             }
             const data = await sendMsg(currentUser.id, to.id, text)
             reset({ text: "" })
@@ -38,28 +38,17 @@ const ChatComponent = ({ to, currentUser, isNext, setIsNext }) => {
         }
     }
 
-    // const msgHandler = async ({ text }) => {
-    //     if (text) {
-    //         const data = await sendMsg(currentUser.id, to.id, text)
-    //         console.log(data)
-    //         reset({ text: "" })
-    //     }
-    // }
-
-
 
     useEffect(() => {
         const updateMSG = async () => {
             const data = await openMsg()
             const arr = data.data
-            const filtered = arr.filter((i) => i.message_from === currentUser.id && i.message_to === to.id)
+            const filtered = arr.filter((i) => ((i.message_from === currentUser.id) && (i.message_to === to.id)) || ((i.message_from === to.id) && (i.message_to === currentUser.id)))
             setMsgList(filtered)
         }
 
         updateMSG()
     }, [to])
-
-    // console.log(msgList)
 
     function socketInitializer() {
         fetch("/api/socket");
@@ -110,11 +99,10 @@ const ChatComponent = ({ to, currentUser, isNext, setIsNext }) => {
         // return arr
         let arr = []
         msgList.forEach((i) => {
-            // console.log(i)
             let obj = {
                 ...i,
                 ['type']: typeof i.text === "string" && "text",
-                ['position']: currentUser?.email === i.message_to ? "left" : "right",
+                ['position']: i.message_from === currentUser.id ? currentUser?.id === i.message_from ? "right" : "left" : currentUser?.email === i.message_from ? "right" : "left",
                 ['date']: new Date(i.time ? i.time : parseInt(i.milisecondtime)),
                 ['hrs']: new Date(i.time ? i.time : parseInt(i.milisecondtime)).getHours(),
                 ['min']: new Date(i.time ? i.time : parseInt(i.milisecondtime)).getMinutes()
