@@ -76,7 +76,7 @@ const SwipeCard = ({ character, onSwipe, i, characters }) => {
 
   return (
     <>
-      <div ref={cardRef} className={`character-card absolute bg-white ease-linear duration-100 transition-transform rounded-xl select-none overflow-hidden ${i === (characters.length - 1) ? "cursor-grab" : ""}`}>
+      <div ref={cardRef} className={`character-card absolute bg-white ease-linear duration-100 transition-transform rounded-xl select-none overflow-hidden w-full h-full ${i === (characters.length - 1) ? "cursor-grab" : ""}`}>
         {/* <div className="group w-full h-full"> */}
         <div className="relative group w-full h-full">
           <Image src={character.imgUrl} alt={character.username} width={1000} height={1000} className='h-full w-full rounded-xl object-cover object-center pointer-events-none' priority />
