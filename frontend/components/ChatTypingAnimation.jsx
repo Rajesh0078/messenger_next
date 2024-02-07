@@ -1,8 +1,9 @@
 import "../styles/ChatTypingAnimation.css"
-const ChatBubble = () => {
+const ChatTypingAnimation = () => {
   return (
-    <div className="chat-bubble p-2">
+    <div className="chat-bubble flex items-center h-[40px] ps-2 mt-[2px]">
       <div className="typing flex">
+        <div className="dot"></div>
         <div className="dot"></div>
         <div className="dot"></div>
         <div className="dot"></div>
@@ -12,4 +13,4 @@ const ChatBubble = () => {
   );
 };
 
-export default ChatBubble;
+export default ChatTypingAnimation;

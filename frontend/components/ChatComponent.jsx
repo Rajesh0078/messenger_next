@@ -6,14 +6,17 @@ import { useForm } from 'react-hook-form';
 import { BiSolidPhoneCall, BiSolidSend, BiSolidVideo } from "react-icons/bi";
 import { toast } from 'react-toastify';
 import { io } from 'socket.io-client';
+import ChatTypingAnimation from './ChatTypingAnimation';
 
 let socket;
 
 const ChatComponent = ({ to, currentUser, isNext, setIsNext }) => {
 
-    const { register, handleSubmit, reset } = useForm()
+    const { register, handleSubmit, reset, formState: { dirtyFields }, watch } = useForm()
     const [chatList, setChatList] = useState([])
     const [msgList, setMsgList] = useState([])
+    const [isTyping, setIsTyping] = useState(false)
+
 
 
     const sendMsgHandler = async ({ text }) => {
@@ -30,7 +33,7 @@ const ChatComponent = ({ to, currentUser, isNext, setIsNext }) => {
             if (data?.status === "true") {
                 socket.emit("send-message", msg)
             }
-            // await postMsg(msg)
+            // await postMsg(sg)
             // console.log(data)
         }
         else {
@@ -50,10 +53,29 @@ const ChatComponent = ({ to, currentUser, isNext, setIsNext }) => {
         updateMSG()
     }, [to])
 
+    useEffect(() => {
+        socket = io();
+        if (watch("text")) {
+            socket.emit("typing", { decision: true, from: currentUser.id, to: to.id })
+        } else if (watch("text").length === 0) {
+            socket.emit("typing", { decision: false, from: currentUser.id, to: to.id })
+        }
+    }, [watch("text")])
+
     function socketInitializer() {
         fetch("/api/socket");
 
         socket = io();
+
+        socket.on("typing_decision", (decision) => {
+            if (decision.decision) {
+                if (decision.to === currentUser.id) {
+                    setIsTyping(decision.decision)
+                }
+            } else {
+                setIsTyping(decision.decision)
+            }
+        })
 
         socket.on("receive-message", async (data) => {
             if (data.message_from === currentUser.email) {
@@ -68,8 +90,8 @@ const ChatComponent = ({ to, currentUser, isNext, setIsNext }) => {
             }
 
         });
-
     }
+
 
     useEffect(() => {
 
@@ -172,6 +194,9 @@ const ChatComponent = ({ to, currentUser, isNext, setIsNext }) => {
                                             )
                                         })
                                     }
+                                    {/* typing animation */}
+                                    {isTyping && <ChatTypingAnimation />}
+
                                 </div>
                             </div>
                         </div>

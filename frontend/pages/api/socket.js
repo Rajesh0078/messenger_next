@@ -25,6 +25,10 @@ export default function SocketHandler(req, res) {
             io.emit("notify-request", (obj))
         })
 
+        socket.on("typing", (decision) => {
+            io.emit("typing_decision", decision)
+        })
+
         socket.on("send-message", (obj) => {
             const sendUserSocket = onlineUsers.get(obj.to)
             if (sendUserSocket) {
