@@ -5,6 +5,7 @@ import Image from 'next/image';
 
 const SwipeCard = ({ character, onSwipe, i, characters }) => {
   const cardRef = useRef(null);
+  console.log("characters ::", characters)
   useEffect(() => {
     if (cardRef.current) {
       const Hammer = require("hammerjs")
