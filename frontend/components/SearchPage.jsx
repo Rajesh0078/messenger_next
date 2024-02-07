@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 // import Swiper from "./Swiper";
 import SwipeCard from './SwipeCard';
 import { toast } from "react-toastify";
+import ChatTypingAnimation from "./ChatTypingAnimation";
 let socket;
 
 const SearchPage = ({ currentUser, users }) => {
@@ -122,21 +123,27 @@ const SearchPage = ({ currentUser, users }) => {
           </div>
 
           {/* desktop view */}
-          <div className='border basis-2/5 xl:basis-1/4 shadow-xl md:block hidden min-h-[calc(100vh-56px)] '>filter </div>
+          <div className='border basis-2/5 xl:basis-1/4 shadow-xl md:block hidden min-h-[calc(100vh-56px)] '>
+            {/* Filter */}
+            <ChatTypingAnimation />
+          </div>
           <div className='border basis-5/6 p-4 py-4 flex flex-wrap justify-evenly gap-5'>
             {/* <Swiper characters={updateMade()} currentUser={currentUser} outOfFrame={outOfFrame} currentIndex={currentIndex} /> */}
             <>
               <div className='w-full flex h-full items-center justify-center relative overflow-hidden transition-opacity duration-[.1s] ease-in-out'>
-                <div className='items-center h-[80vh]  md:h-full md:w-full flex justify-center'>
-                  {
-                    updateMade()?.map((character, i) => {
-                      return (
-                        <React.Fragment key={i}>
-                          <SwipeCard character={character} i={i} onSwipe={handleSwipe} />
-                        </React.Fragment>
-                      )
-                    })
-                  }
+                <div className='relative items-center h-[80vh] md:h-full md:w-full flex justify-center'>
+                  <div className="relative md:max-h-[40rem] h-[70vh] w-[90vw] max-w-[400px] flex items-start">
+                    {
+                      updateMade()?.map((character, i) => {
+                        return (
+                          <React.Fragment key={i}>
+                            <SwipeCard character={character} characters={updateMade()} i={i} onSwipe={handleSwipe} />
+                          </React.Fragment>
+                        )
+                      })
+                    }
+
+                  </div>
                 </div>
               </div>
             </>
