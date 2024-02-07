@@ -68,6 +68,7 @@ const MessageComponent = ({ currentUser, toEmail, chatList, setChatList }) => {
     }, [])
 
 
+
     return (
         <div className='flex flex-col h-[calc(100vh-(120px))]'>
             <div className=' text-black h-[calc(100%-60px)]'>
