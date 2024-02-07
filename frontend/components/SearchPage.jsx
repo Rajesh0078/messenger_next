@@ -1,30 +1,21 @@
-
 "use client"
 
-import { allUsers } from "@/utils/routes"
 import React, { useEffect, useState } from "react"
 import Loader from "./Loader"
 import { io } from "socket.io-client";
-import { toast } from "react-toastify";
 import { BsFillBellFill, BsFillSearchHeartFill } from "react-icons/bs";
 import { useRouter } from "next/navigation";
-import Swiper from "./Swiper";
-// import Slider from "react-slick";
-
-// import "slick-carousel/slick/slick.css";
-// import "slick-carousel/slick/slick-theme.css";
-
+// import Swiper from "./Swiper";
+import SwipeCard from './SwipeCard';
+import { toast } from "react-toastify";
 let socket;
-
-
 
 const SearchPage = ({ currentUser, users }) => {
 
-
-
   const navigate = useRouter()
-
   const [onlineUsers, setOnlineUsers] = useState(users.users)
+  const [showLoader, setShowLoader] = useState(true)
+  // const [currentIndex, setCurrentIndex] = useState(0)
 
   function updateUsers(email, status) {
     const updatedUsers = users.users.map(user => user.email === email ? { ...user, online: status } : user);
@@ -48,7 +39,7 @@ const SearchPage = ({ currentUser, users }) => {
   }
 
   useEffect(() => {
-
+    setShowLoader(false)
     socketInitializer();
 
     socket.on("connect", () => {
@@ -60,9 +51,38 @@ const SearchPage = ({ currentUser, users }) => {
         socket.disconnect()
       }
     }
-
   }, [])
 
+  const swiped = (direction, character) => {
+    if (direction === "left") {
+      toast.warn("Swiped Left")
+      console.log("left", character)
+    } else if (direction === "right") {
+      toast.success("Swiped Right")
+      console.log("right", character)
+    }
+  }
+  const outOfFrame = (character, index) => {
+    let updatedCharacters = onlineUsers.filter((chr) => {
+      if (chr.id === character.id) {
+        return false
+      } else {
+        return true
+      }
+    })
+    setOnlineUsers(updatedCharacters)
+  }
+  const handleSwipe = (chr, direction, index) => {
+    if (direction === 'right') {
+      // Handle right swipe
+      swiped(direction, chr)
+      outOfFrame(chr, index)
+    } else if (direction === 'left') {
+      // Handle left swipe
+      swiped(direction, chr)
+      outOfFrame(chr, index)
+    }
+  };
 
   const updateMade = () => {
     const images = [
@@ -79,18 +99,16 @@ const SearchPage = ({ currentUser, users }) => {
     ]
     let arr = []
     onlineUsers.forEach((user, i) => {
-      let obj = { ...user, ["imgUrl"]: images[(i - 1)]?.image }
+      let obj = { ...user, imgUrl: (i - 1 < 0) ? images[images.length - i - 1]?.image : images[(i - 1)]?.image }
       arr.push(obj)
       // console.log(obj)
     })
     return arr
   }
 
-
-
-
   return (
     <>
+      {showLoader && <Loader />}
       {
         onlineUsers.length &&
         <div className='pt-[56px] w-full flex flex-col md:flex-row'>
@@ -106,16 +124,29 @@ const SearchPage = ({ currentUser, users }) => {
           {/* desktop view */}
           <div className='border basis-2/5 xl:basis-1/4 shadow-xl md:block hidden min-h-[calc(100vh-56px)] '>filter </div>
           <div className='border basis-5/6 p-4 py-4 flex flex-wrap justify-evenly gap-5'>
-
-            <Swiper card={updateMade()} currentUser={currentUser} />
-
+            {/* <Swiper characters={updateMade()} currentUser={currentUser} outOfFrame={outOfFrame} currentIndex={currentIndex} /> */}
+            <>
+              <div className='w-full flex h-full items-center justify-center relative overflow-hidden transition-opacity duration-[.1s] ease-in-out'>
+                <div className='items-center h-[80vh]  md:h-full md:w-full flex justify-center'>
+                  {
+                    updateMade()?.map((character, i) => {
+                      return (
+                        <React.Fragment key={i}>
+                          <SwipeCard character={character} i={i} onSwipe={handleSwipe} />
+                        </React.Fragment>
+                      )
+                    })
+                  }
+                </div>
+              </div>
+            </>
           </div>
         </div>
       }
-      {
+      {/* {
         !onlineUsers.length &&
         <Loader />
-      }
+      } */}
     </>
   )
 }
