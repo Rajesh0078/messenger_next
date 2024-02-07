@@ -20,15 +20,18 @@ const ChatComponent = ({ to, currentUser, isNext, setIsNext }) => {
         if (text && currentUser?.email) {
             let msg = {
                 text: text,
-                from: currentUser?.email,
-                to: to?.email,
+                message_from: currentUser?.email,
+                message_to: to?.email,
                 time: new Date().getTime(),
                 receiverName: to?.username
             }
-            socket.emit("send-message", msg)
+            const data = await sendMsg(currentUser.id, to.id, text)
             reset({ text: "" })
-            await postMsg(msg)
-
+            if (data?.status === "true") {
+                socket.emit("send-message", msg)
+            }
+            // await postMsg(msg)
+            // console.log(data)
         }
         else {
             console.log("not done", currentUser)
@@ -45,32 +48,31 @@ const ChatComponent = ({ to, currentUser, isNext, setIsNext }) => {
 
 
 
-    // useEffect(() => {
-    //     const updateMSG = async () => {
-    //         const data = await openMsg()
-    //         const arr = data.data
-    //         const filtered = arr.filter((i) => i.message_from === currentUser.id && i.message_to === to.id)
-    //         setMsgList(filtered)
-    //     }
+    useEffect(() => {
+        const updateMSG = async () => {
+            const data = await openMsg()
+            const arr = data.data
+            const filtered = arr.filter((i) => i.message_from === currentUser.id && i.message_to === to.id)
+            setMsgList(filtered)
+        }
 
-    //     updateMSG()
-    // }, [to])
+        updateMSG()
+    }, [to])
 
+    // console.log(msgList)
 
     function socketInitializer() {
         fetch("/api/socket");
 
         socket = io();
 
-        // socket.emit("add-user", currentUser.email)
-
         socket.on("receive-message", async (data) => {
-            if (data.from === currentUser.email) {
-                setChatList((pre) => [...pre, data]);
+            if (data.message_from === currentUser.email) {
+                setMsgList((pre) => [...pre, data]);
             }
-            if ((data.to === currentUser.email)) {
-                if (data.from === to.email) {
-                    setChatList((pre) => [...pre, data]);
+            if ((data.message_to === currentUser.email)) {
+                if (data.message_from === to.email) {
+                    setMsgList((pre) => [...pre, data]);
                 } else {
                     toast.info("Message from " + data.receiverName)
                 }
@@ -93,25 +95,12 @@ const ChatComponent = ({ to, currentUser, isNext, setIsNext }) => {
 
 
     const createDataSource = () => {
-        let arr = []
-        chatList.forEach((i) => {
-            let obj = {
-                ...i,
-                ['type']: typeof i.text === "string" && "text",
-                ['position']: currentUser?.email === i.from ? "right" : "left",
-                ['date']: new Date(i.time),
-                ['hrs']: new Date(i.time).getHours(),
-                ['min']: new Date(i.time).getMinutes()
-            }
-            arr.push(obj)
-        })
-        return arr
         // let arr = []
-        // msgList.forEach((i) => {
+        // chatList.forEach((i) => {
         //     let obj = {
         //         ...i,
         //         ['type']: typeof i.text === "string" && "text",
-        //         ['position']: currentUser?.id === i.message_from ? "right" : "left",
+        //         ['position']: currentUser?.email === i.from ? "right" : "left",
         //         ['date']: new Date(i.time),
         //         ['hrs']: new Date(i.time).getHours(),
         //         ['min']: new Date(i.time).getMinutes()
@@ -119,6 +108,20 @@ const ChatComponent = ({ to, currentUser, isNext, setIsNext }) => {
         //     arr.push(obj)
         // })
         // return arr
+        let arr = []
+        msgList.forEach((i) => {
+            // console.log(i)
+            let obj = {
+                ...i,
+                ['type']: typeof i.text === "string" && "text",
+                ['position']: currentUser?.email === i.message_to ? "left" : "right",
+                ['date']: new Date(i.time ? i.time : parseInt(i.milisecondtime)),
+                ['hrs']: new Date(i.time ? i.time : parseInt(i.milisecondtime)).getHours(),
+                ['min']: new Date(i.time ? i.time : parseInt(i.milisecondtime)).getMinutes()
+            }
+            arr.push(obj)
+        })
+        return arr
     }
 
     const messages = async () => {

@@ -65,9 +65,6 @@ const Home = ({ allUsers, currentUser }) => {
 
     }, [])
 
-
-
-
     return (
         <div className='w-full  min-h-screen'>
             <div className='flex h-full'>
