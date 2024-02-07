@@ -14,7 +14,7 @@ export const login = async (body) => {
     } else {
         return {
             success: false,
-            message: "User not found"
+            message: data.message
         }
     }
 }
