@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 html {
     overflow-x: hidden;
 }
@@ -40,11 +39,6 @@ html {
 .chat-scroll::-webkit-scrollbar {
     width: 0;
 }
-
-/* .rce-mbox.rce-mbox-right,
-.rce-mbox.left {
-    margin: 1px 20px 1px 5px !important;
-} */
 
 .ant-btn {
     height: 2.5rem !important;
@@ -94,109 +88,11 @@ html {
 }
 
 
-
-
-
-
-
-/* .tinder {
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    opacity: 0;
-    transition: opacity 0.1s ease-in-out;
-} */
-
 .loaded.tinder {
     opacity: 1;
 }
 
-/* .tinder--cards {
-    flex-grow: 1;
-    padding-top: 40px;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    z-index: 1;
-} */
-
-.tinder--card {
-    display: inline-block;
-    width: 90vw;
-    max-width: 400px;
-    height: 70vh;
-    background: #FFFFFF;
-    padding-bottom: 40px;
-    border-radius: 8px;
-    overflow: hidden;
-    position: absolute;
-    will-change: transform;
-    transition: all 0.3s ease-in-out;
-    cursor: -webkit-grab;
-    cursor: -moz-grab;
-    cursor: grab;
-}
-
-.moving.tinder--card {
+.moving.character-card {
     transition: none;
-    cursor: -webkit-grabbing;
-    cursor: -moz-grabbing;
-    cursor: grabbing;
+    @apply cursor-grabbing
 }
-
-.tinder--card img {
-    max-width: 100%;
-    pointer-events: none;
-}
-
-.tinder--card h3 {
-    margin-top: 32px;
-    font-size: 32px;
-    padding: 0 16px;
-    pointer-events: none;
-}
-
-/* .tinder--card p {
-    margin-top: 24px;
-    font-size: 20px;
-    padding: 0 16px;
-    pointer-events: none;
-} */
-
-/* 
-.tinder--buttons {
-    flex: 0 0 100px;
-    text-align: center;
-    padding-top: 20px;
-}
-
-.tinder--buttons button {
-    border-radius: 50%;
-    line-height: 60px;
-    width: 60px;
-    border: 0;
-    background: #FFFFFF;
-    display: inline-block;
-    margin: 0 8px;
-}
-
-.tinder--buttons button:focus {
-    outline: 0;
-}
-
-.tinder--buttons i {
-    font-size: 32px;
-    vertical-align: middle;
-}
-
-.fa-heart {
-    color: #FFACE4;
-}
-
-.fa-remove {
-    color: #CDD6DD;
-} */
