@@ -22,6 +22,7 @@ const registerCtrl = async (req, res) => {
 const loginCtrl = async (req, res) => {
     try {
         const { email, password } = req.body
+        console.log(req.body)
         const findUser = await User.findOne({ email: email })
         if (!findUser) {
             res.json({ message: 'User not found', success: false });

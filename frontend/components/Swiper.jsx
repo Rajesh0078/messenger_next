@@ -1,4 +1,5 @@
 "use client"
+import Link from 'next/link';
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 
@@ -85,7 +86,9 @@ const Swiper = ({ card, currentUser }) => {
                     card.filter((i) => i.email !== currentUser?.email).map((i, inx) => {
                         return (
                             <div key={inx} className="tinder--card bg-gray-300 ease-linear duration-100 transition-transform shadow-xl h-full !w-full md:max-h-[40rem] rounded-xl relative">
-                                <img src={i.imgUrl} alt="imhha" className="h-full w-full rounded-xl object-cover object-center opacity-[100%] mx-auto" />
+                                <Link href={{ pathname: '/user/' + i._id, }}>
+                                    <img src={i.imgUrl} alt="imhha" className="h-full w-full rounded-xl object-cover object-center opacity-[100%] mx-auto" />
+                                </Link>
                                 <div className="bg-gray-700  rounded-b-xl absolute bottom-0 text-center text-white w-full text-lg">
                                     <p className="font-semibold py-4">{i.username}</p>
                                     {/* <p>{i.email}</p> */}
