@@ -38,7 +38,6 @@ export async function middleware(req) {
 
 export const config = {
     matcher: [
-        '/', '/chat', '/search', '/profile', '/user/:path*',
         /*
          * Match all request paths except for the ones starting with:
          * - api (API routes)
