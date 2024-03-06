@@ -74,17 +74,17 @@ export const getMsg = async (from, to) => {
     return data
 }
 
-export const sendMsg = async (from, to, text) => {
-    try {
-        const res = await fetch(`https://62a8-2401-4900-1f3e-20d9-a980-a1a8-a2d4-46d1.ngrok-free.app/sugerElite/chat/send?message_from=${from}&message_to=${to}&message=${text}`)
-        const data = await res.json()
-        return data
-    } catch (error) {
-        console.log(error)
-    }
-}
+// export const sendMsg = async (from, to, text) => {
+//     try {
+//         const res = await fetch(`https://62a8-2401-4900-1f3e-20d9-a980-a1a8-a2d4-46d1.ngrok-free.app/sugerElite/chat/send?message_from=${from}&message_to=${to}&message=${text}`)
+//         const data = await res.json()
+//         return data
+//     } catch (error) {
+//         console.log(error)
+//     }
+// }
 
-export const openMsg = async () => {
-    const data = await axios.get("https://62a8-2401-4900-1f3e-20d9-a980-a1a8-a2d4-46d1.ngrok-free.app/sugerElite/chat/list")
-    return data.data
-}
+// export const openMsg = async () => {
+//     const data = await axios.get("https://62a8-2401-4900-1f3e-20d9-a980-a1a8-a2d4-46d1.ngrok-free.app/sugerElite/chat/list")
+//     return data.data
+// }

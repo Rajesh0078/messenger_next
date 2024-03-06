@@ -17,7 +17,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} bg-gray-200`}>
+      <body className={`${inter.className} bg-gray-200`} suppressHydrationWarning={true}>
         <ToastContainer autoClose={1500} />
         <StoreProvider>
           <AntdRegistry>

@@ -1,5 +1,5 @@
 "use client"
-import { getMsg, openMsg, postMsg, sendMsg } from '@/utils/routes';
+import { getMsg } from '@/utils/routes';
 import React, { useEffect, useState } from 'react'
 import { IoArrowBackOutline, IoCheckmarkDoneSharp, IoCheckmarkSharp } from "react-icons/io5";
 import { useForm } from 'react-hook-form';
@@ -28,11 +28,9 @@ const ChatComponent = ({ to, currentUser, isNext, setIsNext }) => {
                 time: new Date().getTime(),
                 receiverName: currentUser?.username
             }
-            const data = await sendMsg(currentUser.id, to.id, text)
             reset({ text: "" })
-            if (data?.status === "true") {
-                socket.emit("send-message", msg)
-            }
+            socket.emit("send-message", msg)
+            // }
             // await postMsg(sg)
             // console.log(data)
         }
@@ -42,16 +40,16 @@ const ChatComponent = ({ to, currentUser, isNext, setIsNext }) => {
     }
 
 
-    useEffect(() => {
-        const updateMSG = async () => {
-            const data = await openMsg()
-            const arr = data.data
-            const filtered = arr.filter((i) => ((i.message_from === currentUser.id) && (i.message_to === to.id)) || ((i.message_from === to.id) && (i.message_to === currentUser.id)))
-            setMsgList(filtered)
-        }
+    // useEffect(() => {
+    //     const updateMSG = async () => {
+    //         const data = await getMsg()
+    //         const arr = data.data
+    //         const filtered = arr.filter((i) => ((i.message_from === currentUser.id) && (i.message_to === to.id)) || ((i.message_from === to.id) && (i.message_to === currentUser.id)))
+    //         setMsgList(filtered)
+    //     }
 
-        updateMSG()
-    }, [to])
+    //     updateMSG()
+    // }, [to])
 
     useEffect(() => {
         socket = io();
@@ -80,10 +78,12 @@ const ChatComponent = ({ to, currentUser, isNext, setIsNext }) => {
         socket.on("receive-message", async (data) => {
             if (data.message_from === currentUser.email) {
                 setMsgList((pre) => [...pre, data]);
+                // console.log(data)
             }
             if ((data.message_to === currentUser.email)) {
                 if (data.message_from === to.email) {
                     setMsgList((pre) => [...pre, data]);
+                    // console.log(data)
                 } else {
                     toast.info("Message from " + data.receiverName)
                 }
@@ -91,6 +91,8 @@ const ChatComponent = ({ to, currentUser, isNext, setIsNext }) => {
 
         });
     }
+
+    // console.log(msgList)
 
 
     useEffect(() => {
@@ -106,28 +108,15 @@ const ChatComponent = ({ to, currentUser, isNext, setIsNext }) => {
 
 
     const createDataSource = () => {
-        // let arr = []
-        // chatList.forEach((i) => {
-        //     let obj = {
-        //         ...i,
-        //         ['type']: typeof i.text === "string" && "text",
-        //         ['position']: currentUser?.email === i.from ? "right" : "left",
-        //         ['date']: new Date(i.time),
-        //         ['hrs']: new Date(i.time).getHours(),
-        //         ['min']: new Date(i.time).getMinutes()
-        //     }
-        //     arr.push(obj)
-        // })
-        // return arr
         let arr = []
         msgList.forEach((i) => {
             let obj = {
                 ...i,
                 ['type']: typeof i.text === "string" && "text",
-                ['position']: i.message_from === currentUser.id ? currentUser?.id === i.message_from ? "right" : "left" : currentUser?.email === i.message_from ? "right" : "left",
-                ['date']: new Date(i.time ? i.time : parseInt(i.milisecondtime)),
-                ['hrs']: new Date(i.time ? i.time : parseInt(i.milisecondtime)).getHours(),
-                ['min']: new Date(i.time ? i.time : parseInt(i.milisecondtime)).getMinutes()
+                ['position']: currentUser?.email === i.message_from ? "right" : "left",
+                ['date']: new Date(i.time),
+                ['hrs']: new Date(i.time).getHours(),
+                ['min']: new Date(i.time).getMinutes()
             }
             arr.push(obj)
         })
@@ -168,7 +157,7 @@ const ChatComponent = ({ to, currentUser, isNext, setIsNext }) => {
                                     {
                                         createDataSource().map((i, inx) => {
                                             return (
-                                                <div key={inx} className={`${i.position === "right" ? "self-end text-white !bg-blue-800 rounded-l-3xl rounded-r-[4px]  ps-4 pe-2" : "self-start ps-2 pe-3 rounded-r-3xl rounded-l-[4px]"} max-w-[84%] sm:max-w-[70%]  md:max-w-[45%] bg-white   my-[1px]`}>
+                                                <div key={inx} className={`${i.position === "right" ? "self-end text-white !bg-blue-800 rounded-l-3xl rounded-r-[4px]  ps-4 pe-2" : "self-start ps-2 pe-3 rounded-r-3xl rounded-l-[4px]"} max-w-[84%] sm:max-w-[70%]  md:max-w-[45%] bg-white my-[1px]`}>
                                                     <div className='flex'>
                                                         <p className='py-2 '>{i.text}</p>
                                                         {i.position === "right" ?
@@ -185,7 +174,6 @@ const ChatComponent = ({ to, currentUser, isNext, setIsNext }) => {
                                                             </p> :
                                                             <p className='text-[10px] self-end ms-4 mb-1'>
                                                                 {i.hrs > 12 ? (i.hrs - 12 + ":" + i.min + " pm") : i.hrs + ":" + i.min + " am"}
-
                                                             </p>
                                                         }
 
