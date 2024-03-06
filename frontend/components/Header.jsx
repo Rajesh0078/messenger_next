@@ -60,9 +60,9 @@ const Header = ({ user }) => {
     ];
 
     function socketInitialization() {
-        fetch('/api/socket')
+        // fetch('/api/socket')
 
-        socket = io()
+        socket = io('/socket')
 
 
         socket.on("notify-request", (obj) => {

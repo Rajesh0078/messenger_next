@@ -40,18 +40,11 @@ const io = new Server(server, {
 global.onlineUsers = new Map();
 
 io.on("connection", (socket) => {
-    // console.log("user connected")
-    // global.chatSocket = socket
-    socket.on("add-msg", (userId) => {
-        // onlineUsers.set(userId, socket.id)
-        io.emit("get-msg", userId)
-    })
-
-    // socket.on("user-created",()=>{
-    //     io.emit("get-user")
-    // })
+    socket.on("send-message", (obj) => {
+        io.emit("receive-message", obj);
+    });
 
     socket.on("disconnect", () => {
-        // console.log("user disconnected")
+        console.log("user disconnected")
     })
 })

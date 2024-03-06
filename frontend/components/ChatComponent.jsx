@@ -52,7 +52,7 @@ const ChatComponent = ({ to, currentUser, isNext, setIsNext }) => {
     // }, [to])
 
     useEffect(() => {
-        socket = io();
+        socket = io('/socket');
         if (watch("text")) {
             socket.emit("typing", { decision: true, from: currentUser.id, to: to.id })
         } else if (watch("text").length === 0) {
@@ -61,9 +61,9 @@ const ChatComponent = ({ to, currentUser, isNext, setIsNext }) => {
     }, [watch("text")])
 
     function socketInitializer() {
-        fetch("/api/socket");
+        // fetch("/api/socket");
 
-        socket = io();
+        socket = io('/socket');
 
         socket.on("typing_decision", (decision) => {
             if (decision.decision) {
