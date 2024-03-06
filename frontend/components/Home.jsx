@@ -12,6 +12,10 @@ let socket;
 
 const Home = ({ allUsers, currentUser }) => {
 
+    // function sendProps() {
+    //     Router.push({ pathname: "/search", query: { raj: currentUser } })
+    // }
+
 
     const [sendTo, setSendTo] = useState(null)
     const [isNext, setIsNext] = useState(false)
@@ -68,6 +72,7 @@ const Home = ({ allUsers, currentUser }) => {
         <div className='w-full  min-h-screen'>
             <div className='flex h-full'>
                 <div className={`${isNext ? "hidden" : ""} block h-dvh pt-[56px] z-[10] w-full md:w-[20rem] overflow-y-auto chat-scroll bg-white `}>
+
                     {
                         Users.length && Users.filter(user => user.username !== currentUser.username).map((i, inx) => {
 

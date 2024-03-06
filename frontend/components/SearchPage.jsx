@@ -124,8 +124,8 @@ const SearchPage = ({ currentUser, users }) => {
 
           {/* desktop view */}
           <div className='border basis-2/5 xl:basis-1/4 shadow-xl md:block hidden min-h-[calc(100vh-56px)] '>
-            {/* Filter */}
-            <ChatTypingAnimation />
+            Filter
+            {/* <ChatTypingAnimation /> */}
           </div>
           <div className='border basis-5/6 p-4 py-4 flex flex-wrap justify-evenly gap-5'>
             {/* <Swiper characters={updateMade()} currentUser={currentUser} outOfFrame={outOfFrame} currentIndex={currentIndex} /> */}

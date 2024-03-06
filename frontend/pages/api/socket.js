@@ -49,7 +49,6 @@ export default function SocketHandler(req, res) {
                     break;
                 }
             }
-            // console.log(onlineUsers)
         });
     });
 

@@ -1,6 +1,11 @@
 "use client"
+<<<<<<< HEAD
+import Link from 'next/link';
+import React, { useState, useEffect } from 'react';
+=======
 import Image from 'next/image';
 import React, { useEffect } from 'react';
+>>>>>>> 4170a3cb47f6b8bf8814f1b8691ede35e3d63621
 import { toast } from 'react-toastify';
 
 const Swiper = ({ characters, currentUser, currentIndex, outOfFrame }) => {
@@ -99,7 +104,42 @@ const Swiper = ({ characters, currentUser, currentIndex, outOfFrame }) => {
 			</div>
 		</div>
 
+<<<<<<< HEAD
+                        initCards();
+                    }
+                });
+            });
+        }
+    }, []);
+
+    return (
+
+        <div className="tinder w-full !flex h-full items-center justify-center  relative overflow-hidden flex-col opacity-0 transition-opacity duration-[.1s] ease-in-out">
+            <div className="tinder--cards items-center h-[80vh]  md:h-full md:w-full flex justify-center ">
+                {
+                    card.filter((i) => i.email !== currentUser?.email).map((i, inx) => {
+                        return (
+                            <div key={inx} className="tinder--card bg-gray-300 ease-linear duration-100 transition-transform shadow-xl h-full !w-full md:max-h-[40rem] rounded-xl relative">
+                                <Link href={{ pathname: '/user/' + i._id, }}>
+                                    <img src={i.imgUrl} alt="imhha" className="h-full w-full rounded-xl object-cover object-center opacity-[100%] mx-auto" />
+                                </Link>
+                                <div className="bg-gray-700  rounded-b-xl absolute bottom-0 text-center text-white w-full text-lg">
+                                    <p className="font-semibold py-4">{i.username}</p>
+                                    {/* <p>{i.email}</p> */}
+                                </div>
+                                <div className={`${i.online === "online" ? "block" : "hidden"} bg-blue-600 h-4 w-4 absolute left-2 rounded-full top-2 `}>
+                                </div>
+                            </div>
+                        )
+                    })
+                }
+            </div>
+        </div>
+
+    );
+=======
 	);
+>>>>>>> 4170a3cb47f6b8bf8814f1b8691ede35e3d63621
 };
 
 export default Swiper;
