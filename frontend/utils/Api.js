@@ -10,7 +10,6 @@ export const API = {
     findUser: baseUrl + '/auth/finduser',
     setNotification: baseUrl + "/notify/setnotification",
     getNotification: baseUrl + "/notify/getnotification",
-    sendMsg: "https://62a8-2401-4900-1f3e-20d9-a980-a1a8-a2d4-46d1.ngrok-free.app/sugerElite/chat/send"
 }
 
 export const clientRoutes = {
