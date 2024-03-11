@@ -8,6 +8,7 @@ const router = require('./routes/userRoute');
 const chatRouter = require('./routes/messageRouter');
 const { Server } = require('socket.io');
 const notifyRouter = require('./routes/notificationRouter');
+const https = require("https")
 
 Connection()
 
@@ -30,6 +31,12 @@ const PORT = process.env.PORT || 8888;
 const server = app.listen(PORT, () => {
     console.log('Server is running on port', PORT);
 });
+
+function recall(){
+    https.get("https://messanger-j570.onrender.com/")
+}
+
+setInterval(recall, 60000)
 
 const io = new Server(server, {
     cors: {
